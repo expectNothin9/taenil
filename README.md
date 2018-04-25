@@ -1,10 +1,11 @@
 # taenil
 A side project of taenil
 
-## Documents
+## Documents & Resources
 
 * LINE [Messaging API](https://developers.line.me/en/docs/messaging-api/overview/)
 * [line-bot-sdk-nodejs](https://github.com/line/line-bot-sdk-nodejs) github
+* [LINE@生活圈](http://at-blog.line.me/tw/)
 
 ## Progress
 
@@ -13,7 +14,7 @@ A side project of taenil
 * [x] [LINE@](https://admin-official.line.me/) account (auto-created, bind with channel)
 * [ ] Building a sample bot with Heroku
   - [ ] Prepare channel `SECRET` and `ACCESS_TOKEN`
-  - [ ] Echo Bot 
+  - [ ] echo-bot
 
 ## Notes
 

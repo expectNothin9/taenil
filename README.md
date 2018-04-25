@@ -3,9 +3,8 @@ A side project of taenil
 
 ## Documents
 
-- LINE [Messaging API](https://developers.line.me/en/docs/messaging-api/overview/)
-- [line-bot-sdk-nodejs](https://github.com/line/line-bot-sdk-nodejs) github
-
+* LINE [Messaging API](https://developers.line.me/en/docs/messaging-api/overview/)
+* [line-bot-sdk-nodejs](https://github.com/line/line-bot-sdk-nodejs) github
 
 ## Progress
 
@@ -13,3 +12,7 @@ A side project of taenil
 * [x] Create a channel (required for Messaging API)
 * [x] [LINE@](https://admin-official.line.me/) account (auto-created, bind with channel)
 * [ ] Building a sample bot with Heroku
+
+## Notes
+
+* [Heroku Config Vars](https://devcenter.heroku.com/articles/config-vars) for secret and access token

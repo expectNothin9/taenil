@@ -12,6 +12,8 @@ A side project of taenil
 * [x] Create a channel (required for Messaging API)
 * [x] [LINE@](https://admin-official.line.me/) account (auto-created, bind with channel)
 * [ ] Building a sample bot with Heroku
+  - [ ] Prepare channel `SECRET` and `ACCESS_TOKEN`
+  - [ ] Echo Bot 
 
 ## Notes
 

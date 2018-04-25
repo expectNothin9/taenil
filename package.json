@@ -1,0 +1,24 @@
+{
+  "name": "taenil",
+  "version": "0.0.0",
+  "description": "A side project of taenil",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/expectNothin9/taenil.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/expectNothin9/taenil/issues"
+  },
+  "homepage": "https://github.com/expectNothin9/taenil#readme",
+  "dependencies": {
+    "@line/bot-sdk": "^6.0.1",
+    "express": "^4.16.3"
+  }
+}

@@ -32,7 +32,7 @@ function handleEvent (event) {
 
 // heroku dev debug
 app.get('*', (req, res) => {
-  res.send('Hello lineBot')
+  res.send('Hello lineBot!')
 })
 
 const port = process.env.PORT || 3000

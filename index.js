@@ -12,7 +12,7 @@ app.post('/webhook', line.middleware(config), (req, res) => {
     .all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))
     .catch((exception) => {
-      console.log('webhook', exception)
+      console.log(exception)
       res.json({})
     })
 })

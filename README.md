@@ -20,7 +20,7 @@ A side project of taenil
     - Use `heroku ps:scale web=1` to ensure that at least one instance is running
     - View logs via `heroku logs --tail`
     - Set secret variables into Heroku config, then app can use via `process.env.<secret_variable_name>`
-    	```
+    	```shell
     	heroku config:set CHANNEL_SECRET=<YOUR_SECRET>
     	heroku config:set CHANNEL_ACCESS_TOKEN=<YOUR_ACCESS_TOKEN>
     	```
@@ -31,6 +31,6 @@ A side project of taenil
 
 * [Heroku Config Vars](https://devcenter.heroku.com/articles/config-vars) for secret and access token
 * Push same heroku app from different work place
-	```
+	```shell
 	git remote add heroku https://git.heroku.com/<YOUR_HEROKU_APP_NAME>.git
 	```

@@ -7,18 +7,13 @@ const config = {
 }
 
 const app = express()
-try {
-  app.post('/webhook', line.middleware(config), (req, res) => {
-    Promise
-      .all(req.body.events.map(handleEvent))
-      .then((result) => res.json(result))
-  })
-} catch (e) { console.log(e) }
+app.post('/webhook', line.middleware(config), (req, res) => {
+  Promise
+    .all(req.body.events.map(handleEvent))
+    .then((result) => res.json(result))
+})
 
-try {
-  const lineBot = new line.Client(config)
-} catch (e) { console.log(e) }
-
+const lineBot = new line.Client(config)
 function handleEvent (event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     return Promise.resolve(null)

@@ -14,10 +14,15 @@ try {
       .then((result) => res.json(result))
   })
 } catch (e) {
-  console.log('SOME ERROR HAPPENS', e)
+  console.log('EXCEPTION: POST /webhook', e)
 }
 
-const lineBot = new line.Client(config)
+try {
+  const lineBot = new line.Client(config)
+} catch (e) {
+  console.log('EXCEPTION: new line.Client', e)
+}
+
 function handleEvent (event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     return Promise.resolve(null)

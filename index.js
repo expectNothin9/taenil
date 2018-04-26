@@ -25,6 +25,11 @@ function handleEvent (event) {
   })
 }
 
+// heroku dev debug
+app.get('*', (req, res) => {
+  res.send('Hello lineBot')
+})
+
 const port = process.env.PORT || 3000
 app.listen(port, () => {
   console.log(`listening on ${port}`)

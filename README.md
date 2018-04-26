@@ -13,8 +13,12 @@ A side project of taenil
 * [x] Create a channel (required for Messaging API)
 * [x] [LINE@](https://admin-official.line.me/) account (auto-created, bind with channel)
 * [ ] Building a sample bot with Heroku
-  - [ ] Prepare channel `SECRET` and `ACCESS_TOKEN`
-  - [ ] echo-bot
+  - [ ] Prepare LINE channel `SECRET` and `ACCESS_TOKEN`
+  - [x] Install [Heroku CLI](https://devcenter.heroku.com/articles/getting-started-with-nodejs#set-up) and `heroku login`
+  - [ ] echo-bot and deploy to Heroku
+    - Move to app folder, `heroku create` and `git push heroku master`
+    - Use `heroku ps:scale web=1` to ensure that at least one instance is running
+    - View logs via `heroku logs --tail`
 
 ## Notes
 

@@ -13,15 +13,11 @@ try {
       .all(req.body.events.map(handleEvent))
       .then((result) => res.json(result))
   })
-} catch (e) {
-  console.log('EXCEPTION: POST /webhook', e)
-}
+} catch (e) { console.log(e) }
 
 try {
   const lineBot = new line.Client(config)
-} catch (e) {
-  console.log('EXCEPTION: new line.Client', e)
-}
+} catch (e) { console.log(e) }
 
 function handleEvent (event) {
   if (event.type !== 'message' || event.message.type !== 'text') {

@@ -19,10 +19,11 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 
 const lineBot = new line.Client(config)
 function handleEvent (event) {
+  console.log('event', event)
   if (event.type !== 'message' || event.message.type !== 'text') {
     return Promise.resolve(null)
   }
-
+  console.log('event.source', event.source)
   return lineBot.replyMessage(event.replyToken, {
     type: 'text',
     text: event.message.text

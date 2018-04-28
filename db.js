@@ -11,7 +11,7 @@ const UserDBSchema = new mongoose.Schema({
   lineName: String,
   points: { type: Number, min: 0 }
 })
-const Users = mongoose.model('DBUsers', userSchema)
+const Users = mongoose.model('DBUsers', UserDBSchema)
 // Clear out old data
 // DBUsers.remove({}, function(err) {
 //   if (err) {

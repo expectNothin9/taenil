@@ -4,27 +4,26 @@ const lineBot = require('./lineBot')
 const DB = require('./db')
 
 // Creating one user.
-var xxx = new DB.Users ({
+var xxx = new DB.Users({
   lineId: 'xxx_lineId',
   lineName: 'xxx_lineName',
   points: 0
 })
-// Saving it to the database.  
+// Saving it to the database.
 xxx.save((err) => { if (err) console.log('Error on save!', err) })
 
-var YYY = new DB.Users ({
+var YYY = new DB.Users({
   lineId: 'YYY_lineId',
   lineName: 'YYY_lineName',
   points: 0
 })
-// Saving it to the database.  
+// Saving it to the database.
 YYY.save((err) => { if (err) console.log('Error on save!', err) })
-
 
 // LINE
 const config = {
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
-  channelSecret: process.env.CHANNEL_SECRET  
+  channelSecret: process.env.CHANNEL_SECRET
 }
 
 const app = express()

@@ -1,7 +1,27 @@
 const express = require('express')
 const line = require('@line/bot-sdk')
 const lineBot = require('./lineBot')
+const DB = require('./db')
 
+// Creating one user.
+var xxx = new DB.Users ({
+  lineId: 'xxx_lineId',
+  lineName: 'xxx_lineName',
+  points: 0
+})
+// Saving it to the database.  
+xxx.save((err) => { if (err) console.log('Error on save!', err) })
+
+var YYY = new DB.Users ({
+  lineId: 'YYY_lineId',
+  lineName: 'YYY_lineName',
+  points: 0
+})
+// Saving it to the database.  
+YYY.save((err) => { if (err) console.log('Error on save!', err) })
+
+
+// LINE
 const config = {
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.CHANNEL_SECRET  
@@ -9,39 +29,6 @@ const config = {
 
 const app = express()
 app.post('/webhook', line.middleware(config), lineBot.webhookHandler)
-// app.post('/webhook', line.middleware(config), (req, res) => {
-//   Promise
-//     .all(req.body.events.map(handleEvent))
-//     .then((result) => res.json(result))
-//     .catch((exception) => {
-//       console.log(exception)
-//       res.json({})
-//     })
-// })
-
-// const lineBot = new line.Client(config)
-// function handleEvent (event) {
-//   // console.log('event', event)
-//   // event {
-//   //   type: 'message',
-//   //   replyToken: 'xxx',
-//   //   source: { userId: 'xxx', type: 'user' },
-//   //   timestamp: 1524824621289,
-//   //   message: { type: 'text', id: '7863626468882', text: '我是誰' }
-//   // }
-//   if (event.type !== 'message' || event.message.type !== 'text') {
-//     return Promise.resolve(null)
-//   }
-
-//   return lineBot.getProfile(event.source.userId)
-//     .then((profile) => profile.displayName)
-//     .then((userName) => lineBot.replyMessage(event.replyToken, {
-//       type: 'text',
-//       text: `${userName}: ${event.message.text}`
-//     }))
-//     .catch((exception) => { console.log(exception) })
-// }
-
 
 // heroku dev debug
 app.get('*', (req, res) => {

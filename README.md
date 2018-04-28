@@ -6,6 +6,8 @@ A side project of taenil
 * LINE [Messaging API](https://developers.line.me/en/docs/messaging-api/overview/)
 * [line-bot-sdk-nodejs](https://github.com/line/line-bot-sdk-nodejs) github
 * [LINE@生活圈](http://at-blog.line.me/tw/)
+* Getting Started on [Heroku with Node.js](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
+* MongoLab MongoDB [Mongoose Node.js Demo on Heroku](https://github.com/mongolab/hello-mongoose)
 
 ## Progress
 

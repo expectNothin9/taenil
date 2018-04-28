@@ -42,6 +42,7 @@ app.post('/webhook', line.middleware(config), lineBot.webhookHandler)
 //     .catch((exception) => { console.log(exception) })
 // }
 
+
 // heroku dev debug
 app.get('*', (req, res) => {
   res.send('Hello lineBot!')

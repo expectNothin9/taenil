@@ -28,6 +28,15 @@ A side project of taenil
     	```
   - [x] Enable webhooks and set Webhook URL on LINE Developers console
     - ex: <YOUR_HEROKU_APP_NAME>.herokuapp.com/webhook
+* [ ] MongoDB on Heroku
+  - [x] Open datebase with simple schema
+    - Use [mongolab](https://devcenter.heroku.com/articles/mongolab) (Heroku add-ons, sandbox for free)
+      - Adopt, `heroku addons:create mongolab`
+      - Connection URI will be set in Heroku config, `heroku config:get MONGODB_URI
+    `
+      - App should use connection URI via `process.env.MONGODB_URI`
+  - [ ] Add, Get, Update, Delete
+  - [ ] Integrate with LINE Messaging API flow
 
 ## Notes
 

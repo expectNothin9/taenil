@@ -48,11 +48,16 @@ const botUtil = {
               return newUser.save()
             })
             .then((resp) => {
-              console.log('newUser.save', resp)
-              return bot.replyMessage(replyToken, { type: 'text', text: 'ADDED' })
+              return bot.replyMessage(replyToken, {
+                type: 'text',
+                text: `ADDED\n${resp.lineName}: ${resp.points}pts`
+              })
             })
         } else if (users.length === 1) {
-          return bot.replyMessage(replyToken, { type: 'text', text: 'ALREADY EXIST' })
+          return bot.replyMessage(replyToken, {
+            type: 'text',
+            text: `ALREADY EXIST\n${users[0].lineName}: ${users[0].points}pts`
+          })
         } else {
           throw new Error('db has multiple records with same line id')
         }
@@ -75,7 +80,7 @@ const botUtil = {
     return db.Users.find({})
       .then((users) => {
         console.log('botShowAllUsers', users)
-        const userPointTexts = users.map(user => `${user.lineName}: ${user.points}點`)
+        const userPointTexts = users.map(user => `${user.lineName}: ${user.points}pts`)
         return bot.replyMessage(event.replyToken, {
           type: 'text',
           text: userPointTexts.join('\n')

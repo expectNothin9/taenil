@@ -13,11 +13,11 @@ const UserDBSchema = new mongoose.Schema({
 })
 const Users = mongoose.model('DBUsers', UserDBSchema)
 // Clear out old data
-Users.remove({}, function (err) {
-  if (err) {
-    console.log('error deleting old data.')
-  }
-})
+// Users.remove({}, function (err) {
+//   if (err) {
+//     console.log('error deleting old data.')
+//   }
+// })
 
 const DB = {
   Users

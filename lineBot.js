@@ -43,11 +43,12 @@ const botEcho = ({ bot, event }) => {
 
 const botShowAllUsers = ({ bot, event, db }) => {
   return db.Users.find({})
-    .then(res => {
-      console.log('botShowAllUsers', res)
+    .then(users => {
+      console.log('botShowAllUsers', users)
+      const userPointTexts = users.map(user => `${user.lineName}: ${user.points}點`)
       return bot.replyMessage(event.replyToken, {
         type: 'text',
-        text: 'bot: ALL_USERS'
+        text: userPointTexts.join('\n')
       })
     })
     .catch(log.handleException('botShowAllUsers'))

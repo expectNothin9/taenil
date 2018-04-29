@@ -15,15 +15,24 @@ function handleEvent (event) {
   //   timestamp: 1524824621289,
   //   message: { type: 'text', id: '7863626468882', text: '我是誰' }
   // }
-  if (event.type !== 'message' || event.message.type !== 'text') {
+  const { type, message } = event
+  if (type !== 'message' || message.type !== 'text') {
     return Promise.resolve(null)
   }
 
-  return bot.getProfile(event.source.userId)
+  switch (message.text) {
+    default:
+      return botEcho({ bot, event })
+  }
+}
+
+const botEcho = ({ bot, event }) => {
+  const { source, replyToken, message } = event
+  return bot.getProfile(source.userId)
     .then((profile) => profile.displayName)
-    .then((userName) => bot.replyMessage(event.replyToken, {
+    .then((userName) => bot.replyMessage(replyToken, {
       type: 'text',
-      text: `${userName}: ${event.message.text}`
+      text: `${userName}: ${message.text}`
     }))
     .catch((exception) => { console.log(exception) })
 }

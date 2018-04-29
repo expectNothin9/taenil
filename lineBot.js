@@ -23,35 +23,66 @@ function handleEvent (event) {
   }
 
   switch (message.text) {
+    case 'ADD_ME':
+      return botUtil.addUser({ bot, event, db })
     case 'ALL_USERS':
-      return botShowAllUsers({ bot, event, db })
+      return botUtil.showAllUsers({ bot, event, db })
     default:
-      return botEcho({ bot, event })
+      return botUtil.echo({ bot, event })
   }
 }
 
-const botEcho = ({ bot, event }) => {
-  const { source, replyToken, message } = event
-  return bot.getProfile(source.userId)
-    .then((profile) => profile.displayName)
-    .then((userName) => bot.replyMessage(replyToken, {
-      type: 'text',
-      text: `${userName}: ${message.text}`
-    }))
-    .catch(log.handleException('botEcho'))
-}
-
-const botShowAllUsers = ({ bot, event, db }) => {
-  return db.Users.find({})
-    .then(users => {
-      console.log('botShowAllUsers', users)
-      const userPointTexts = users.map(user => `${user.lineName}: ${user.points}點`)
-      return bot.replyMessage(event.replyToken, {
-        type: 'text',
-        text: userPointTexts.join('\n')
+const botUtil = {
+  addUser: ({ bot, event, db }) => {
+    const { source, replyToken } = event
+    return db.Users.find({ lineId: source.userId })
+      .then((users) => {
+        if (users.length === 0) {
+          return bot.getProfile(source.userId)
+            .then((profile) => {
+              const newUser = new db.Users({
+                lineId: profile.userId,
+                lineName: profile.displayName,
+                points: 0
+              })
+              return newUser.save()
+            })
+            .then((resp) => {
+              console.log('newUser.save', resp)
+              return bot.replyMessage(replyToken, { type: 'text', text: 'ADDED' })
+            })
+        } else if (users.length === 1) {
+          return bot.replyMessage(replyToken, { type: 'text', text: 'ALREADY EXIST' })
+        } else {
+          throw new Error('db has multiple records with same line id')
+        }
       })
-    })
-    .catch(log.handleException('botShowAllUsers'))
+      .catch(log.handleException('botUtil.addUser'))
+  },
+
+  echo: ({ bot, event }) => {
+    const { source, replyToken, message } = event
+    return bot.getProfile(source.userId)
+      .then((profile) => profile.displayName)
+      .then((userName) => bot.replyMessage(replyToken, {
+        type: 'text',
+        text: `${userName}: ${message.text}`
+      }))
+      .catch(log.handleException('botUtil.echo'))
+  },
+
+  showAllUsers: ({ bot, event, db }) => {
+    return db.Users.find({})
+      .then((users) => {
+        console.log('botShowAllUsers', users)
+        const userPointTexts = users.map(user => `${user.lineName}: ${user.points}點`)
+        return bot.replyMessage(event.replyToken, {
+          type: 'text',
+          text: userPointTexts.join('\n')
+        })
+      })
+      .catch(log.handleException('botUtil.showAllUsers'))
+  }
 }
 
 const webhookHandler = (req, res) => {

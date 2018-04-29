@@ -25,7 +25,7 @@ function handleEvent (event) {
   switch (message.text) {
     case 'ADD_ME':
       return botUtil.addUser({ bot, event, db })
-    case 'ALL_USERS':
+    case 'SHOW_ALL_USERS':
       return botUtil.showAllUsers({ bot, event, db })
     default:
       return botUtil.echo({ bot, event })
@@ -35,7 +35,7 @@ function handleEvent (event) {
 const botUtil = {
   addUser: ({ bot, event, db }) => {
     const { source, replyToken } = event
-    return db.Users.find({ lineId: source.userId })
+    return db.getUsers({ lineId: source.userId })
       .then((users) => {
         if (users.length === 0) {
           return bot.getProfile(source.userId)
@@ -43,9 +43,9 @@ const botUtil = {
               lineId: profile.userId,
               lineName: profile.displayName
             }))
-            .then((resp) => bot.replyMessage(replyToken, {
+            .then((user) => bot.replyMessage(replyToken, {
               type: 'text',
-              text: `ADDED\n${resp.lineName}: ${resp.points}pts`
+              text: `ADDED\n${user.lineName}: ${user.points}pts`
             }))
         } else if (users.length === 1) {
           return bot.replyMessage(replyToken, {
@@ -71,7 +71,7 @@ const botUtil = {
   },
 
   showAllUsers: ({ bot, event, db }) => {
-    return db.Users.find({})
+    return db.getUsers()
       .then((users) => {
         console.log('botShowAllUsers', users)
         const userPointTexts = users.map(user => `${user.lineName}: ${user.points}pts`)

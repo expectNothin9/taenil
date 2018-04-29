@@ -24,9 +24,16 @@ const addUser = ({ lineId, lineName, points = 0 }) => {
   return user.save()
 }
 
+const getUsers = ({ lineId } = {}) => {
+  return lineId
+    ? Users.find({ lineId })
+    : Users.find({})
+}
+
 const DB = {
   Users,
-  addUser
+  addUser,
+  getUsers
 }
 
 module.exports = DB

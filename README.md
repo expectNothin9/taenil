@@ -36,7 +36,9 @@ A side project of taenil
     `
       - App should use connection URI via `process.env.MONGODB_URI`
   - [ ] Add, Get, Update, Delete
+    - [x] addUser, getUsers
   - [ ] Integrate with LINE Messaging API flow
+    - [x] ADD_ME, SHOW_ALL_USERS
 
 ## Notes
 

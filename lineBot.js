@@ -1,4 +1,6 @@
 const line = require('@line/bot-sdk')
+const db = require('./db')
+const log = require('./log')
 
 const config = {
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
@@ -21,6 +23,8 @@ function handleEvent (event) {
   }
 
   switch (message.text) {
+    case 'ALL_USERS':
+      return botShowAllUsers({ bot, event, db })
     default:
       return botEcho({ bot, event })
   }
@@ -34,7 +38,19 @@ const botEcho = ({ bot, event }) => {
       type: 'text',
       text: `${userName}: ${message.text}`
     }))
-    .catch((exception) => { console.log(exception) })
+    .catch(log.handleException('botEcho'))
+}
+
+const botShowAllUsers = ({ bot, event, db }) => {
+  return db.Users.find({})
+    .then(res => {
+      console.log('botShowAllUsers', res)
+      return bot.replyMessage(event.replyToken, {
+        type: 'text',
+        text: 'bot: ALL_USERS'
+      })
+    })
+    .catch(log.handleException('botShowAllUsers'))
 }
 
 const webhookHandler = (req, res) => {

@@ -20,7 +20,7 @@ Users.remove({}, function (err) {
 })
 
 const addUser = ({ lineId, lineName, points = 0 }) => {
-  const user = new db.Users({ lineId, lineName, points })
+  const user = new Users({ lineId, lineName, points })
   return user.save()
 }
 

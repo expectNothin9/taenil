@@ -39,20 +39,14 @@ const botUtil = {
       .then((users) => {
         if (users.length === 0) {
           return bot.getProfile(source.userId)
-            .then((profile) => {
-              const newUser = new db.Users({
-                lineId: profile.userId,
-                lineName: profile.displayName,
-                points: 0
-              })
-              return newUser.save()
-            })
-            .then((resp) => {
-              return bot.replyMessage(replyToken, {
-                type: 'text',
-                text: `ADDED\n${resp.lineName}: ${resp.points}pts`
-              })
-            })
+            .then((profile) => db.addUser({
+              lineId: profile.userId,
+              lineName: profile.displayName
+            }))
+            .then((resp) => bot.replyMessage(replyToken, {
+              type: 'text',
+              text: `ADDED\n${resp.lineName}: ${resp.points}pts`
+            }))
         } else if (users.length === 1) {
           return bot.replyMessage(replyToken, {
             type: 'text',

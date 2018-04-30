@@ -2,9 +2,9 @@ const mongoose = require('mongoose')
 
 // DB
 mongoose.connect(process.env.MONGODB_URI)
-const db = mongoose.connection
-db.on('error', (err) => { console.log('db', err) })
-db.once('open', () => { console.log('db opened') })
+const DB = mongoose.connection
+DB.on('error', (err) => { console.log('DB', err) })
+DB.once('open', () => { console.log('DB opened') })
 
 const UserDBSchema = new mongoose.Schema({
   lineId: String,
@@ -24,16 +24,22 @@ const addUser = ({ lineId, lineName, points = 0 }) => {
   return user.save()
 }
 
-const getUsers = ({ lineId } = {}) => {
-  return lineId
-    ? Users.find({ lineId })
+const getUsers = ({ ...conditions } = {}) => {
+  console.log('conditions', conditions)
+  return conditions
+    ? Users.find({ ...conditions })
     : Users.find({})
 }
 
-const DB = {
-  Users,
-  addUser,
-  getUsers
+const updateUserPoints = ({ points, ...conditions }) => {
+  return Users.findOneAndUpdate({ ...conditions }, { points })
 }
 
-module.exports = DB
+const db = {
+  Users,
+  addUser,
+  getUsers,
+  updateUserPoints
+}
+
+module.exports = db

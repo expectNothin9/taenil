@@ -22,9 +22,14 @@ function handleEvent (event) {
     return Promise.resolve(null)
   }
 
-  switch (message.text) {
+  // command router
+  const matched = message.text.match(/^\[[A-Z_]*\]/)
+  const command = matched[1]
+  switch (command) {
     case 'ADD_ME':
       return botUtil.addUser({ bot, event, db })
+    case 'ADD_POINTS_TO_USER':
+      return botUtil.addPointsToUser({ bot, event, db })
     case 'SHOW_ALL_USERS':
       return botUtil.showAllUsers({ bot, event, db })
     default:
@@ -59,6 +64,34 @@ const botUtil = {
       .catch(log.handleException('botUtil.addUser'))
   },
 
+  addPointsToUser: ({ bot, event, db }) => {
+    const { replyToken, message } = event
+    const messageTexts = message.text.split(' ')
+    const userLineName = messageTexts[1]
+    const points = parseInt(messageTexts[2])
+    if (!userLineName) { throw new Error(`addPointsToUser, userLineName: ${userLineName}`) }
+    if (!points || points <= 0) { throw new Error(`addPointsToUser, points: ${points}`) }
+
+    return db.getUsers({ lineName: userLineName })
+      .then((users) => {
+        if (users.length === 0) {
+          return bot.replyMessage(replyToken, {
+            type: 'text',
+            text: `USER NOT FOUND\n${userLineName} not found`
+          })
+        } else if (users.length === 1) {
+          return db.updateUserPoints({ lineName: users[0].lineName, points: users[0].points + points })
+            .then((user) => bot.replyMessage(replyToken, {
+              type: 'text',
+              text: `UPDATED\n${user.lineName}: ${user.points}pts`
+            }))
+        } else {
+          throw new Error('db has multiple records with same line name')
+        }
+      })
+      .catch(log.handleException('botUtil.addPointsToUser'))
+  },
+
   echo: ({ bot, event }) => {
     const { source, replyToken, message } = event
     return bot.getProfile(source.userId)
@@ -89,7 +122,7 @@ const webhookHandler = (req, res) => {
     .all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))
     .catch((exception) => {
-      console.log(exception)
+      console.log(log.handleException('webhookHandler'))
       res.json({})
     })
 }

@@ -25,13 +25,13 @@ const addUser = ({ lineId, lineName, points = 0 }) => {
 }
 
 const getUsers = ({ ...conditions } = {}) => {
-  console.log('conditions', conditions)
   return conditions
     ? Users.find({ ...conditions })
     : Users.find({})
 }
 
 const updateUserPoints = ({ points, ...conditions }) => {
+  console.log('updateUserPoints', conditions, points)
   return Users.findOneAndUpdate({ ...conditions }, { points })
 }
 

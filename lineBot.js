@@ -23,17 +23,22 @@ function handleEvent (event) {
   }
 
   // command router
-  const matched = message.text.match(/^\[[A-Z_]*\]/)
-  const command = matched[1]
-  switch (command) {
-    case 'ADD_ME':
-      return botUtil.addUser({ bot, event, db })
-    case 'ADD_POINTS_TO_USER':
-      return botUtil.addPointsToUser({ bot, event, db })
-    case 'SHOW_ALL_USERS':
-      return botUtil.showAllUsers({ bot, event, db })
-    default:
-      return botUtil.echo({ bot, event })
+  const matched = message.text.match(/^\[([A-Z_]*)\]/)
+  console.log('matched', matched)
+  if (matched) {
+    const command = matched[1]
+    switch (command) {
+      case 'ADD_ME':
+        return botUtil.addUser({ bot, event, db })
+      case 'ADD_POINTS_TO_USER':
+        return botUtil.addPointsToUser({ bot, event, db })
+      case 'SHOW_ALL_USERS':
+        return botUtil.showAllUsers({ bot, event, db })
+      default:
+        return botUtil.echo({ bot, event })
+    }
+  } else {
+    return botUtil.echo({ bot, event })
   }
 }
 

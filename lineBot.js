@@ -9,7 +9,7 @@ const config = {
 
 const bot = new line.Client(config)
 function handleEvent (event) {
-  // console.log('event', event)
+  console.log('event', event)
   // event {
   //   type: 'message',
   //   replyToken: 'xxx',
@@ -146,20 +146,21 @@ const makeCarouselTemplateMessage = ({ altText }) => {
 
 const makeCarouselColumns = () => {
   const items = [
-    { name: 'Apple', price: 2 },
-    { name: 'Banana', price: 3 }
+    { id: '001', name: 'Apple', price: 5 },
+    { id: '002', name: 'Banana', price: 4 },
+    { id: '003', name: 'Coke', price: 15 }
   ]
   return items.map((item) => {
     return {
       thumbnailImageUrl: `https://dummyimage.com/600x600/333333/ffffff.jpg&text=${item.name}`,
       imageBackgroundColor: '#ff5555',
       title: `${item.name.toUpperCase()}`,
-      text: `${item.name}`,
+      text: `${item.name}, ${item.price}pts/unit`,
       actions: [
         {
           type: 'postback',
-          label: `Buy ${item.name}`,
-          data: `[BUY] Apple`
+          label: `Buy ${item.name} with ${item.price}pts`,
+          data: `action=buy&itemId=${item.id}`
         }
       ]
     }
@@ -167,6 +168,7 @@ const makeCarouselColumns = () => {
 }
 
 const webhookHandler = (req, res) => {
+  console.log('req.body', req.body)
   Promise
     .all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))

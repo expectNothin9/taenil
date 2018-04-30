@@ -127,7 +127,7 @@ const botUtil = {
 
   showShoppingList: ({ bot, event }) => {
     const altText = 'Shopping List'
-    return bot.replyToken(event.replyToken, makeCarouselTemplateMessage({ altText }))
+    return bot.replyMessage(event.replyToken, makeCarouselTemplateMessage({ altText }))
       .catch(log.handleException('botUtil.showShoppingList'))
   }
 }

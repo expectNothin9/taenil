@@ -127,42 +127,7 @@ const botUtil = {
 
   showShoppingList: ({ bot, event }) => {
     const altText = 'Shopping List'
-    // return bot.replyMessage(event.replyToken, makeCarouselTemplateMessage({ altText }))
-    return bot.replyMessage(event.replyToken, {
-  "type": "template",
-  "altText": "This is a buttons template",
-  "template": {
-      "type": "buttons",
-      "thumbnailImageUrl": "https://example.com/bot/images/image.jpg",
-      "imageAspectRatio": "rectangle",
-      "imageSize": "cover",
-      "imageBackgroundColor": "#FFFFFF",
-      "title": "Menu",
-      "text": "Please select",
-      "defaultAction": {
-          "type": "uri",
-          "label": "View detail",
-          "uri": "http://example.com/page/123"
-      },
-      "actions": [
-          {
-            "type": "postback",
-            "label": "Buy",
-            "data": "action=buy&itemid=123"
-          },
-          {
-            "type": "postback",
-            "label": "Add to cart",
-            "data": "action=add&itemid=123"
-          },
-          {
-            "type": "uri",
-            "label": "View detail",
-            "uri": "http://example.com/page/123"
-          }
-      ]
-  }
-})
+    return bot.replyMessage(event.replyToken, makeCarouselTemplateMessage({ altText }))
       .catch(log.handleException('botUtil.showShoppingList'))
   }
 }
@@ -173,7 +138,8 @@ const makeCarouselTemplateMessage = ({ altText }) => {
     altText,
     template: {
       type: 'carousel',
-      columns: makeCarouselColumns()
+      columns: makeCarouselColumns(),
+      imageAspectRatio: 'square'
     }
   }
 }
@@ -187,7 +153,6 @@ const makeCarouselColumns = () => {
     return {
       thumbnailImageUrl: `https://dummyimage.com/600x600/333333/ffffff.jpg&text=${item.name}`,
       imageBackgroundColor: '#ff5555',
-      imageAspectRatio: 'square',
       title: `${item.name.toUpperCase()}`,
       text: `${item.name}`,
       actions: [

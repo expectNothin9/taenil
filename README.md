@@ -40,6 +40,10 @@ A side project of taenil
   - [ ] Integrate with LINE Messaging API flow
     - [x] ADD_ME, SHOW_ALL_USERS, ADD_POINTS_TO_USER
 * [x] Setup Rich Menu via [LINE@ MANAGER](https://admin-official.line.me/)
+* [ ] [Template Messages](https://developers.line.me/en/docs/messaging-api/reference/#template-messages) (Buttons, Confirm, Carousel, Image carousel)
+  - [x] Carousel template
+  - [x] Handle postback events
+    - Example of postback data, `command=BUY&itemId=001`
 
 ## Notes
 

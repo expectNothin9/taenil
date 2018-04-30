@@ -15,7 +15,6 @@ const shoppingListItems = [
 
 const bot = new line.Client(config)
 function handleEvent (event) {
-  console.log('event', event)
   // event {
   //   type: 'message',
   //   replyToken: 'xxx',
@@ -202,7 +201,6 @@ const makeCarouselColumns = () => {
 }
 
 const webhookHandler = (req, res) => {
-  console.log('req.body', req.body)
   Promise
     .all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))

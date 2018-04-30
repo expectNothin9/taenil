@@ -85,10 +85,11 @@ const botUtil = {
             text: `USER NOT FOUND\n${userLineName} not found`
           })
         } else if (users.length === 1) {
-          return db.updateUserPoints({ lineName: users[0].lineName, points: users[0].points + points })
+          const toPoints = users[0].points + points
+          return db.updateUserPoints({ lineName: users[0].lineName, points: toPoints })
             .then((user) => bot.replyMessage(replyToken, {
               type: 'text',
-              text: `UPDATED\n${user.lineName}: ${user.points}pts`
+              text: `UPDATED\n${user.lineName}: ${toPoints}pts`
             }))
         } else {
           throw new Error('db has multiple records with same line name')

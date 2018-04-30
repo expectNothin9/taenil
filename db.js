@@ -31,7 +31,7 @@ const getUsers = ({ ...conditions } = {}) => {
 }
 
 const updateUserPoints = ({ points, ...conditions }) => {
-  console.log('updateUserPoints', conditions, points)
+  // will return FOUND record BEFORE value UPDATED
   return Users.findOneAndUpdate({ ...conditions }, { points })
 }
 

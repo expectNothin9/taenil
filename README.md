@@ -36,9 +36,10 @@ A side project of taenil
     `
       - App should use connection URI via `process.env.MONGODB_URI`
   - [ ] Add, Get, Update, Delete
-    - [x] addUser, getUsers
+    - [x] addUser, getUsers, updateUserPoints
   - [ ] Integrate with LINE Messaging API flow
-    - [x] ADD_ME, SHOW_ALL_USERS
+    - [x] ADD_ME, SHOW_ALL_USERS, ADD_POINTS_TO_USER
+* [x] Setup Rich Menu via [LINE@ MANAGER](https://admin-official.line.me/)
 
 ## Notes
 

@@ -32,8 +32,11 @@ function handleEvent (event) {
         return botUtil.addUser({ bot, event, db })
       case 'ADD_POINTS_TO_USER':
         return botUtil.addPointsToUser({ bot, event, db })
+      case 'SHOPPING':
+        return botUtil.showShoppingList({ bot, event })
       case 'SHOW_ALL_USERS':
         return botUtil.showAllUsers({ bot, event, db })
+
       default:
         return botUtil.echo({ bot, event })
     }
@@ -120,7 +123,47 @@ const botUtil = {
         })
       })
       .catch(log.handleException('botUtil.showAllUsers'))
+  },
+
+  showShoppingList: ({ bot, event }) => {
+    const altText = 'Shopping List'
+    return bot.replyToken(event.replyToken, makeCarouselTemplateMessage({ altText }))
+      .catch(log.handleException('botUtil.showShoppingList'))
   }
+}
+
+const makeCarouselTemplateMessage = ({ altText }) => {
+  return {
+    type: 'template',
+    altText,
+    template: {
+      type: 'carousel',
+      columns: makeCarouselColumns()
+    }
+  }
+}
+
+const makeCarouselColumns = () => {
+  const items = [
+    { name: 'Apple', price: 2 },
+    { name: 'Banana', price: 3 }
+  ]
+  return items.map((item) => {
+    return {
+      thumbnailImageUrl: `https://dummyimage.com/600x600/333333/ffffff.jpg&text=${item.name}`,
+      imageBackgroundColor: '#ff5555',
+      imageAspectRatio: 'square',
+      title: `${item.name.toUpperCase()}`,
+      text: `${item.name}`,
+      actions: [
+        {
+          type: 'postpack',
+          label: `Buy ${item.name}`,
+          data: `[BUY] Apple`
+        }
+      ]
+    }
+  })
 }
 
 const webhookHandler = (req, res) => {

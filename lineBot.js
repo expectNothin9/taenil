@@ -7,6 +7,12 @@ const config = {
   channelSecret: process.env.CHANNEL_SECRET
 }
 
+const shoppingListItems = [
+  { id: '001', name: 'Apple', price: 5 },
+  { id: '002', name: 'Banana', price: 4 },
+  { id: '003', name: 'Coke', price: 15 }
+]
+
 const bot = new line.Client(config)
 function handleEvent (event) {
   console.log('event', event)
@@ -17,11 +23,27 @@ function handleEvent (event) {
   //   timestamp: 1524824621289,
   //   message: { type: 'text', id: '7863626468882', text: '我是誰' }
   // }
-  const { type, message } = event
-  if (type !== 'message' || message.type !== 'text') {
+  // event { type: 'postback',
+  //   replyToken: '6e8df6af47b34fee920fe2cf60a96391',
+  //   source: { userId: 'U8623630fec8f503992c201e68c442434', type: 'user' },
+  //   timestamp: 1525077181637,
+  //   postback: { data: 'action=BUY&itemId=003' }
+  // }
+  switch (event.type) {
+    case 'message':
+      return handleMessageEvent(event)
+    case 'postback':
+      return handlePostbackEvent(event)
+    default:
+      return Promise.resolve(null)
+  }
+}
+
+function handleMessageEvent (event) {
+  const { message } = event
+  if (message.type !== 'text') {
     return Promise.resolve(null)
   }
-
   // command router
   const matched = message.text.match(/^\[([A-Z_]*)\]/)
   console.log('matched', matched)
@@ -42,6 +64,22 @@ function handleEvent (event) {
     }
   } else {
     return botUtil.echo({ bot, event })
+  }
+}
+
+function handlePostbackEvent (event) {
+  const kvs = event.postback.data.split('&')
+  const info = {}
+  kvs.forEach((kv) => {
+    const splitKV = kv.split('=')
+    info[splitKV[0]] = splitKV[1]
+  })
+  switch (info.command) {
+    case 'BUY':
+      const item = shoppingListItems.find((item) => item.id === info.itemId) || {}
+      return botUtil.echo({ bot, event, forceEchoText: `BUY ${item.name}?` })
+    default:
+      return Promise.resolve(null)
   }
 }
 
@@ -101,13 +139,14 @@ const botUtil = {
       .catch(log.handleException('botUtil.addPointsToUser'))
   },
 
-  echo: ({ bot, event }) => {
+  echo: ({ bot, event, forceEchoText }) => {
     const { source, replyToken, message } = event
+    const echoText = forceEchoText || message.text
     return bot.getProfile(source.userId)
       .then((profile) => profile.displayName)
       .then((userName) => bot.replyMessage(replyToken, {
         type: 'text',
-        text: `${userName}: ${message.text}`
+        text: `${userName}: ${echoText}`
       }))
       .catch(log.handleException('botUtil.echo'))
   },
@@ -145,12 +184,7 @@ const makeCarouselTemplateMessage = ({ altText }) => {
 }
 
 const makeCarouselColumns = () => {
-  const items = [
-    { id: '001', name: 'Apple', price: 5 },
-    { id: '002', name: 'Banana', price: 4 },
-    { id: '003', name: 'Coke', price: 15 }
-  ]
-  return items.map((item) => {
+  return shoppingListItems.map((item) => {
     return {
       thumbnailImageUrl: `https://dummyimage.com/600x600/333333/ffffff.jpg&text=${item.name}`,
       imageBackgroundColor: '#ff5555',
@@ -160,7 +194,7 @@ const makeCarouselColumns = () => {
         {
           type: 'postback',
           label: `Buy ${item.name} with ${item.price}pts`,
-          data: `action=buy&itemId=${item.id}`
+          data: `command=BUY&itemId=${item.id}`
         }
       ]
     }

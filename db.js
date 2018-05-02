@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const log = require('./log')
 
 // DB
 mongoose.connect(process.env.MONGODB_URI)
@@ -35,11 +36,48 @@ const updateUserPoints = ({ points, ...conditions }) => {
   return Users.findOneAndUpdate({ ...conditions }, { points })
 }
 
+const MerchandiseDBSchema = new mongoose.Schema({
+  id: String,
+  name: String,
+  price: { type: Number, min: 0 }
+})
+const Merchandises = mongoose.model('DBMerchandises', MerchandiseDBSchema)
+// Clear out old data
+// Merchandises.remove({}, function (err) {
+//   if (err) {
+//     console.log('error deleting old data.')
+//   }
+// })
+
+const initMerchandise = () => {
+  const candidates = [
+    { id: '001', name: 'A', price: 5 },
+    { id: '002', name: 'B', price: 4 },
+    { id: '003', name: 'C', price: 3 },
+    { id: '004', name: 'D', price: 12 }
+  ]
+  candidates.forEach((candidate) => {
+    const merchandise = new Merchandises(candidate)
+    merchandise.save()
+      .catch(log.handleException('initMerchandise'))
+  })
+}
+
+const getMerchandises = ({ ...conditions } = {}) => {
+  return conditions
+    ? Merchandises.find({ ...conditions })
+    : Merchandises.find({})
+}
+
+initMerchandise()
+
 const db = {
   Users,
   addUser,
   getUsers,
-  updateUserPoints
+  updateUserPoints,
+  Merchandises,
+  getMerchandises
 }
 
 module.exports = db

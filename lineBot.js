@@ -7,12 +7,6 @@ const config = {
   channelSecret: process.env.CHANNEL_SECRET
 }
 
-const shoppingListItems = [
-  { id: '001', name: 'Apple', price: 5 },
-  { id: '002', name: 'Banana', price: 4 },
-  { id: '003', name: 'Coke', price: 15 }
-]
-
 const bot = new line.Client(config)
 function handleEvent (event) {
   // event {
@@ -75,8 +69,17 @@ function handlePostbackEvent (event) {
   })
   switch (info.command) {
     case 'BUY':
-      const item = shoppingListItems.find((item) => item.id === info.itemId) || {}
-      return botUtil.echo({ bot, event, forceEchoText: `BUY ${item.name}?` })
+      return db.getMerchandises({ id: info.merchandiseId })
+        .then((merchandises) => {
+          if (merchandises.length === 0) {
+            throw new Error('Merchandise not found')
+          } else if (merchandises.length === 1) {
+            return botUtil.echo({ bot, event, forceEchoText: `BUY ${merchandises[0].name}?` })
+          } else {
+            throw new Error('multiple merchandise records found with same id')
+          }
+        })
+        .catch(log.handleException('handlePostbackEvent, BUY'))
     default:
       return Promise.resolve(null)
   }
@@ -165,35 +168,36 @@ const botUtil = {
 
   showShoppingList: ({ bot, event }) => {
     const altText = 'Shopping List'
-    return bot.replyMessage(event.replyToken, makeCarouselTemplateMessage({ altText }))
+    return db.getMerchandises()
+      .then((merchandises) => bot.replyMessage(event.replyToken, makeCarouselTemplateMessage({ altText, merchandises })))
       .catch(log.handleException('botUtil.showShoppingList'))
   }
 }
 
-const makeCarouselTemplateMessage = ({ altText }) => {
+const makeCarouselTemplateMessage = ({ altText, merchandises }) => {
   return {
     type: 'template',
     altText,
     template: {
       type: 'carousel',
-      columns: makeCarouselColumns(),
+      columns: makeCarouselColumns({ merchandises }),
       imageAspectRatio: 'square'
     }
   }
 }
 
-const makeCarouselColumns = () => {
-  return shoppingListItems.map((item) => {
+const makeCarouselColumns = ({ merchandises }) => {
+  return merchandises.map((merchandise) => {
     return {
-      thumbnailImageUrl: `https://dummyimage.com/600x600/333333/ffffff.jpg&text=${item.name}`,
+      thumbnailImageUrl: `https://dummyimage.com/600x600/333333/ffffff.jpg&text=${merchandise.name}`,
       imageBackgroundColor: '#ff5555',
-      title: `${item.name.toUpperCase()}`,
-      text: `${item.name}, ${item.price}pts/unit`,
+      title: `${merchandise.name.toUpperCase()}`,
+      text: `${merchandise.name}, ${merchandise.price}pts/unit`,
       actions: [
         {
           type: 'postback',
-          label: `Buy ${item.name} with ${item.price}pts`,
-          data: `command=BUY&itemId=${item.id}`
+          label: `Buy ${merchandise.name} with ${merchandise.price}pts`,
+          data: `command=BUY&itemId=${merchandise.id}`
         }
       ]
     }

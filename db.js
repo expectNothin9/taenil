@@ -49,27 +49,28 @@ const Merchandises = mongoose.model('DBMerchandises', MerchandiseDBSchema)
 //   }
 // })
 
-const initMerchandise = () => {
-  const candidates = [
-    { id: '001', name: 'A', price: 5 },
-    { id: '002', name: 'B', price: 4 },
-    { id: '003', name: 'C', price: 3 },
-    { id: '004', name: 'D', price: 12 }
-  ]
-  candidates.forEach((candidate) => {
-    const merchandise = new Merchandises(candidate)
-    merchandise.save()
-      .catch(log.handleException('initMerchandise'))
-  })
-}
+// const initMerchandise = () => {
+//   const candidates = [
+//     { id: '001', name: 'A', price: 5 },
+//     { id: '002', name: 'B', price: 4 },
+//     { id: '003', name: 'C', price: 3 },
+//     { id: '004', name: 'D', price: 12 }
+//   ]
+//   candidates.forEach((candidate) => {
+//     const merchandise = new Merchandises(candidate)
+//     merchandise.save()
+//       .catch(log.handleException('initMerchandise'))
+//   })
+// }
 
 const getMerchandises = ({ ...conditions } = {}) => {
+  console.log('getMerchandises', conditions)
   return conditions
     ? Merchandises.find({ ...conditions })
     : Merchandises.find({})
 }
 
-initMerchandise()
+// initMerchandise()
 
 const db = {
   Users,

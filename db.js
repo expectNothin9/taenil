@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const log = require('./log')
+// const log = require('./log')
 
 // DB
 mongoose.connect(process.env.MONGODB_URI)
@@ -64,7 +64,6 @@ const Merchandises = mongoose.model('DBMerchandises', MerchandiseDBSchema)
 // }
 
 const getMerchandises = ({ ...conditions } = {}) => {
-  console.log('getMerchandises', conditions)
   return conditions
     ? Merchandises.find({ ...conditions })
     : Merchandises.find({})

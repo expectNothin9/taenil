@@ -197,7 +197,7 @@ const makeCarouselColumns = ({ merchandises }) => {
         {
           type: 'postback',
           label: `Buy ${merchandise.name} with ${merchandise.price}pts`,
-          data: `command=BUY&itemId=${merchandise.id}`
+          data: `command=BUY&merchandiseId=${merchandise.id}`
         }
       ]
     }

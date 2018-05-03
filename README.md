@@ -3,15 +3,15 @@ A side project of taenil
 
 ## Features
 
-| Checked | Timing   | Keyword & Parameters                       | Description |
-| ------- | -------- | ------------------------------------------ | ----------- |
-| [x]     | follow   | N/A                                        | Add user information when bot is added as a friend (or unblocked) |
-| [x]     | message  | N/A                                        | Echo user's message back when not in keyword list |
-| [x]     | message  | [SHOPPING]                                 | Display shopping list |
-| [x]     | message  | [SHOW_ALL_USERS]                           | Show all users information |
-| [x]     | message  | [ADD_POINTS_TO_USER] ${lineName} ${points} | Add points to user with target LINE name |
-| [ ]     | postback | command=BUY&merchandiseId=${id}            | Reply confirm to buy message when user tap buy button of merchandise on shopping list |
-| [ ]     | postback | command=CONFIRM_TO_BUY&merchandiseId=${id} | Create order when user tap confirm to buy button, and reply order information |
+| Timing   | Keyword & Parameters                       | Description |
+| -------- | ------------------------------------------ | ----------- |
+| follow   | N/A                                        | [x] Add user information when bot is added as a friend (or unblocked) |
+| message  | N/A                                        | [x] Echo user's message back when not in keyword list |
+| message  | [SHOPPING]                                 | [x] Display shopping list |
+| message  | [SHOW_ALL_USERS]                           | [x] Show all users information |
+| message  | [ADD_POINTS_TO_USER] ${lineName} ${points} | [x] Add points to user with target LINE name |
+| postback | command=BUY&merchandiseId=${id}            | [ ] Reply confirm to buy message when user tap buy button of merchandise on shopping list |
+| postback | command=CONFIRM_TO_BUY&merchandiseId=${id} | [ ] Create order when user tap confirm to buy button, and reply order information |
 
 ## Documents & Resources
 

@@ -51,7 +51,7 @@ function handleMessageEvent (event) {
     switch (command) {
       case 'ADD_ME':
         return botUtil.addUser({ bot, event, db })
-      case 'ADD_POINTS_TO_USER':
+      case 'DEPOSIT':
         return botUtil.addPointsToUser({ bot, event, db })
       case 'SHOPPING':
         return botUtil.showShoppingList({ bot, event })
@@ -70,7 +70,7 @@ function handleMessageEvent (event) {
 //   replyToken: 'xxx',
 //   source: { userId: 'xxx', type: 'user' },
 //   timestamp: 1525077181637,
-//   postback: { data: 'action=BUY&merchandiseId=003' }
+//   postback: { data: 'cmd=BUY&mid=003' }
 // }
 function handlePostbackEvent (event) {
   const kvs = event.postback.data.split('&')
@@ -79,9 +79,9 @@ function handlePostbackEvent (event) {
     const splitKV = kv.split('=')
     info[splitKV[0]] = splitKV[1]
   })
-  switch (info.command) {
+  switch (info.cmd) {
     case 'BUY':
-      return db.getMerchandises({ id: info.merchandiseId })
+      return db.getMerchandises({ id: info.mid })
         .then((merchandises) => {
           if (merchandises.length === 0) {
             throw new Error('Merchandise not found')
@@ -209,7 +209,7 @@ const makeCarouselColumns = ({ merchandises }) => {
         {
           type: 'postback',
           label: `Buy ${merchandise.name} with ${merchandise.price}pts`,
-          data: `command=BUY&merchandiseId=${merchandise.id}`
+          data: `cmd=BUY&mid=${merchandise.id}`
         }
       ]
     }

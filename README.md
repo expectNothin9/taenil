@@ -3,15 +3,15 @@ A side project of taenil
 
 ## Features
 
-| Timing   | Keyword & Parameters                       | Description |
-| -------- | ------------------------------------------ | ----------- |
-| follow   | N/A                                        | :o: Add user information when bot is added as a friend (or unblocked) |
-| message  | N/A                                        | :o: Echo user's message back when not in keyword list |
-| message  | [SHOPPING]                                 | :o: Display shopping list |
-| message  | [SHOW_ALL_USERS]                           | :o: Show all users information |
-| message  | [ADD_POINTS_TO_USER] ${lineName} ${points} | :o: Add points to user with target LINE name |
-| postback | command=BUY&merchandiseId=${id}            | :x: Reply confirm to buy message when user tap buy button of merchandise on shopping list |
-| postback | command=CONFIRM_TO_BUY&merchandiseId=${id} | :x: Create order when user tap confirm to buy button, and reply order information |
+| Timing   | Keyword & Parameters            | Description |
+| -------- | ------------------------------- | ----------- |
+| follow   | N/A                             | :o: Add user information when bot is added as a friend (or unblocked) |
+| message  | N/A                             | :o: Echo user's message back when not in keyword list |
+| message  | [SHOPPING]                      | :o: Display shopping list |
+| message  | [SHOW_ALL_USERS]                | :o: Show all users information |
+| message  | [DEPOSIT] ${lineName} ${points} | :o: Add points to user with target LINE name |
+| postback | cmd=BUY&mid=${id}               | :x: Reply confirm to buy message when user tap buy button of merchandise on shopping list |
+| postback | cmd=CONFIRM_TO_BUY&mid=${id}    | :x: Create order when user tap confirm to buy button, and reply order information |
 
 ## Documents & Resources
 

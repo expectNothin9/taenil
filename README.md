@@ -56,6 +56,7 @@ A side project of taenil
   - [x] Carousel template
   - [x] Handle postback events
     - Example of postback data, `command=BUY&itemId=001`
+* [x] [IFTTT](https://ifttt.com/discover) Applet, if PR, then send LINE message
 
 ## Notes
 

@@ -9,20 +9,9 @@ const config = {
 
 const bot = new line.Client(config)
 function handleEvent (event) {
-  // event {
-  //   type: 'message',
-  //   replyToken: 'xxx',
-  //   source: { userId: 'xxx', type: 'user' },
-  //   timestamp: 1524824621289,
-  //   message: { type: 'text', id: '7863626468882', text: '我是誰' }
-  // }
-  // event { type: 'postback',
-  //   replyToken: '6e8df6af47b34fee920fe2cf60a96391',
-  //   source: { userId: 'U8623630fec8f503992c201e68c442434', type: 'user' },
-  //   timestamp: 1525077181637,
-  //   postback: { data: 'action=BUY&itemId=003' }
-  // }
   switch (event.type) {
+    case 'follow':
+      return handleFollowEvent(event)
     case 'message':
       return handleMessageEvent(event)
     case 'postback':
@@ -32,6 +21,23 @@ function handleEvent (event) {
   }
 }
 
+// event {
+//   "replyToken": "xxx",
+//   "type": "follow",
+//   "timestamp": 1462629479859,
+//   "source": { "type": "user", "userId": "xxx" }
+// }
+function handleFollowEvent (event) {
+  return botUtil.addUser({ bot, event, db })
+}
+
+// event {
+//   type: 'message',
+//   replyToken: 'xxx',
+//   source: { userId: 'xxx', type: 'user' },
+//   timestamp: 1524824621289,
+//   message: { type: 'text', id: '7863626468882', text: 'blablabla' }
+// }
 function handleMessageEvent (event) {
   const { message } = event
   if (message.type !== 'text') {
@@ -60,6 +66,12 @@ function handleMessageEvent (event) {
   }
 }
 
+// event { type: 'postback',
+//   replyToken: 'xxx',
+//   source: { userId: 'xxx', type: 'user' },
+//   timestamp: 1525077181637,
+//   postback: { data: 'action=BUY&merchandiseId=003' }
+// }
 function handlePostbackEvent (event) {
   const kvs = event.postback.data.split('&')
   const info = {}

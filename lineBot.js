@@ -1,5 +1,5 @@
 const line = require('@line/bot-sdk')
-const db = require('./db')
+const db = require('./db/util')
 const log = require('./log')
 
 const config = {

@@ -54,8 +54,8 @@ function handleMessageEvent (event) {
       case 'DEPOSIT':
         return botUtil.addPointsToUser({ bot, event, db })
       case 'SHOPPING':
-        return botUtil.showShoppingList({ bot, event })
-      case 'SHOW_ALL_USERS':
+        return botUtil.showShoppingList({ bot, event, db })
+      case 'ALL_USERS':
         return botUtil.showAllUsers({ bot, event, db })
 
       default:
@@ -178,7 +178,7 @@ const botUtil = {
       .catch(log.handleException('botUtil.showAllUsers'))
   },
 
-  showShoppingList: ({ bot, event }) => {
+  showShoppingList: ({ bot, event, db }) => {
     const altText = 'Shopping List'
     return db.getMerchandises()
       .then((merchandises) => bot.replyMessage(event.replyToken, makeCarouselTemplateMessage({ altText, merchandises })))

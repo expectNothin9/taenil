@@ -134,7 +134,7 @@ const botUtil = {
     if (!userLineName) { throw new Error(`addPointsToUser, userLineName: ${userLineName}`) }
     if (!points || points <= 0) { throw new Error(`addPointsToUser, points: ${points}`) }
 
-    return db.getUsers({ lineName: userLineName })
+    return db.getUsers({ name: userLineName })
       .then((users) => {
         if (users.length === 0) {
           return bot.replyMessage(replyToken, {
@@ -143,10 +143,10 @@ const botUtil = {
           })
         } else if (users.length === 1) {
           const toPoints = users[0].points + points
-          return db.updateUserPoints({ lineName: users[0].lineName, points: toPoints })
+          return db.updateUserPoints({ lineName: users[0].name, points: toPoints })
             .then((user) => bot.replyMessage(replyToken, {
               type: 'text',
-              text: `UPDATED\n${user.lineName}: ${toPoints}pts`
+              text: `UPDATED\n${user.name}: ${toPoints}pts`
             }))
         } else {
           throw new Error('db has multiple records with same line name')
@@ -184,7 +184,7 @@ const botUtil = {
     return db.getUsers()
       .then((users) => {
         console.log('botShowAllUsers', users)
-        const userPointTexts = users.map(user => `${user.lineName}: ${user.points}pts`)
+        const userPointTexts = users.map(user => `${user.name}: ${user.points}pts`)
         return bot.replyMessage(event.replyToken, {
           type: 'text',
           text: userPointTexts.join('\n')

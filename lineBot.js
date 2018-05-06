@@ -58,7 +58,7 @@ function handleMessageEvent (event) {
       case 'ALL_USERS':
         return botUtil.showAllUsers({ bot, event, db })
       case 'DELETE_ALL_USERS':
-        return botUtil.deleteUsers({ bot, event, db })
+        return botUtil.deleteAllUsers({ bot, event, db })
 
       default:
         return botUtil.echo({ bot, event })

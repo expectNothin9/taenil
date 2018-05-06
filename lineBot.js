@@ -143,7 +143,7 @@ const botUtil = {
           })
         } else if (users.length === 1) {
           const toPoints = users[0].points + points
-          return db.updateUserPoints({ lineName: users[0].name, points: toPoints })
+          return db.updateUserPoints({ name: users[0].name, points: toPoints })
             .then((user) => bot.replyMessage(replyToken, {
               type: 'text',
               text: `UPDATED\n${user.name}: ${toPoints}pts`

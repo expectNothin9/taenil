@@ -9,7 +9,7 @@ A side project of taenil
 | message  | N/A                             | :o: Echo user's message back when not in keyword list |
 | message  | [SHOPPING]                      | :o: Display shopping list |
 | message  | [ALL_USERS]                     | :o: Show all users information |
-| message  | [DEPOSIT] ${lineName} ${points} | :o: Add points to user with target LINE name |
+| message  | [DEPOSIT] ${name} ${points}     | :o: Add points to user with target LINE name |
 | postback | cmd=BUY&mid=${id}               | :x: Reply confirm to buy message when user tap buy button of merchandise on shopping list |
 | postback | cmd=CONFIRM_TO_BUY&mid=${id}    | :x: Create order when user tap confirm to buy button, and reply order information |
 

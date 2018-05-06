@@ -46,25 +46,29 @@ function handleMessageEvent (event) {
   // command router
   const matched = message.text.match(/^\[([A-Z_]*)\]/)
   console.log('matched', matched)
-  if (matched) {
-    const command = matched[1]
-    switch (command) {
-      case 'ADD_ME':
-        return botUtil.addUser({ bot, event, db })
-      case 'DEPOSIT':
-        return botUtil.addPointsToUser({ bot, event, db })
-      case 'SHOPPING':
-        return botUtil.showShoppingList({ bot, event, db })
-      case 'ALL_USERS':
-        return botUtil.showAllUsers({ bot, event, db })
-      case 'DELETE_ALL_USERS':
-        return botUtil.deleteAllUsers({ bot, event, db })
+  if (!matched) { return botUtil.echo({ bot, event }) }
 
-      default:
-        return botUtil.echo({ bot, event })
-    }
-  } else {
-    return botUtil.echo({ bot, event })
+  const command = matched[1]
+  switch (command) {
+    case 'MY_INFO':
+      return botUtil.showUserInfo({ bot, event, db })
+    case 'SHOPPING':
+      return botUtil.showShoppingList({ bot, event, db })
+
+    // ADMIN_ONLY
+    case 'DEPOSIT':
+      return botUtil.addPointsToUser({ bot, event, db })
+    case 'ALL_USERS':
+      return botUtil.showAllUsers({ bot, event, db })
+
+    // DEV_ONLY
+    case 'ADD_ME':
+      return botUtil.addUser({ bot, event, db })
+    case 'DELETE_ALL_USERS':
+      return botUtil.deleteAllUsers({ bot, event, db })
+
+    default:
+      return botUtil.echo({ bot, event })
   }
 }
 

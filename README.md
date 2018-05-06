@@ -3,15 +3,30 @@ A side project of taenil
 
 ## Features
 
-| Timing   | Keyword & Parameters            | Description |
-| -------- | ------------------------------- | ----------- |
-| follow   | N/A                             | :o: Add user information when bot is added as a friend (or unblocked) |
-| message  | N/A                             | :o: Echo user's message back when not in keyword list |
-| message  | [SHOPPING]                      | :o: Display shopping list |
-| message  | [ALL_USERS]                     | :o: Show all users information |
-| message  | [DEPOSIT] ${name} ${points}     | :o: Add points to user with target LINE name |
-| postback | cmd=BUY&mid=${id}               | :x: Reply confirm to buy message when user tap buy button of merchandise on shopping list |
-| postback | cmd=CONFIRM_TO_BUY&mid=${id}    | :x: Create order when user tap confirm to buy button, and reply order information |
+### Public Features
+
+| Timing   | Keyword & Parameters         | Description |
+| -------- | ---------------------------- | ----------- |
+| follow   | N/A                          | :o: Add user information when bot is added as a friend (or unblocked) |
+| message  | N/A                          | :o: Echo user's message back when not in keyword list |
+| message  | [MY_INFO]                    | :x: Display user info with available actions |
+| message  | [SHOPPING]                   | :o: Display shopping list |
+| postback | cmd=BUY&mid=${id}            | :x: Reply confirm to buy message when user tap buy button of merchandise on shopping list |
+| postback | cmd=CONFIRM_TO_BUY&mid=${id} | :x: Create order when user tap confirm to buy button, and reply order information |
+
+### Admin-only Features
+
+| Timing   | Keyword & Parameters         | Description |
+| -------- | ---------------------------- | ----------- |
+| message  | [ALL_USERS]                  | :o: Show all users information |
+| message  | [DEPOSIT] ${name} ${points}  | :o: Add points to user with target LINE name |
+
+### Dev-only Features (!!REMOVE_WHEN_PRODUCTION!!)
+
+| Timing   | Keyword & Parameters         | Description |
+| -------- | ---------------------------- | ----------- |
+| message  | [ADD_ME]                     | :o: Add current user just like follow event |
+| message  | [DELETE_ALL_USERS]           | :o: Delete all users information, **DEV_ONLY**, **REMOVE_WHEN_PRODUCTION** |
 
 ## Documents & Resources
 

@@ -1,6 +1,6 @@
 const express = require('express')
 const line = require('@line/bot-sdk')
-const lineBot = require('./lineBot')
+const lineBotWebhookHandler = require('./bot/core')
 
 // LINE
 const config = {
@@ -9,7 +9,7 @@ const config = {
 }
 
 const app = express()
-app.post('/webhook', line.middleware(config), lineBot.webhookHandler)
+app.post('/webhook', line.middleware(config), lineBotWebhookHandler)
 
 // heroku dev debug
 app.get('*', (req, res) => {

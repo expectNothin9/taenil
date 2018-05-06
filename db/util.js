@@ -3,9 +3,15 @@ const models = require('./core')
 
 const { Users, Merchandises } = models
 
-const addUser = ({ lineId, lineName, points = 0 }) => {
-  const user = new Users({ lineId, lineName, points })
+const addUser = ({ id, name, mobile, points = 0 }) => {
+  const user = new Users({ id, name, mobile, points })
   return user.save()
+}
+
+const deleteUsers = ({ ...conditions } = {}) => {
+  return conditions
+    ? Users.remove({ ...conditions })
+    : Users.remove({})
 }
 
 const getUsers = ({ ...conditions } = {}) => {
@@ -43,6 +49,7 @@ const getMerchandises = ({ ...conditions } = {}) => {
 
 const db = {
   addUser,
+  deleteUsers,
   getUsers,
   updateUserPoints,
   getMerchandises

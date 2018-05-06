@@ -57,6 +57,8 @@ function handleMessageEvent (event) {
         return botUtil.showShoppingList({ bot, event, db })
       case 'ALL_USERS':
         return botUtil.showAllUsers({ bot, event, db })
+      case 'DELETE_ALL_USERS':
+        return botUtil.deleteUsers({ bot, event, db })
 
       default:
         return botUtil.echo({ bot, event })
@@ -100,25 +102,25 @@ function handlePostbackEvent (event) {
 const botUtil = {
   addUser: ({ bot, event, db }) => {
     const { source, replyToken } = event
-    return db.getUsers({ lineId: source.userId })
+    return db.getUsers({ id: source.userId })
       .then((users) => {
         if (users.length === 0) {
           return bot.getProfile(source.userId)
             .then((profile) => db.addUser({
-              lineId: profile.userId,
-              lineName: profile.displayName
+              id: profile.userId,
+              name: profile.displayName
             }))
             .then((user) => bot.replyMessage(replyToken, {
               type: 'text',
-              text: `ADDED\n${user.lineName}: ${user.points}pts`
+              text: `ADDED\n${user.name}: ${user.points}pts`
             }))
         } else if (users.length === 1) {
           return bot.replyMessage(replyToken, {
             type: 'text',
-            text: `ALREADY EXIST\n${users[0].lineName}: ${users[0].points}pts`
+            text: `ALREADY EXIST\n${users[0].name}: ${users[0].points}pts`
           })
         } else {
-          throw new Error('db has multiple records with same line id')
+          throw new Error('db has multiple records with same LINE id')
         }
       })
       .catch(log.handleException('botUtil.addUser'))
@@ -151,6 +153,19 @@ const botUtil = {
         }
       })
       .catch(log.handleException('botUtil.addPointsToUser'))
+  },
+
+  deleteAllUsers: ({ bot, event, db }) => {
+    const { replyToken } = event
+    return bot.deleteUsers()
+      .then((result) => {
+        console.log(result)
+        return bot.replyMessage(replyToken, {
+          type: 'text',
+          text: 'DELETE ALL USERS executed'
+        })
+      })
+      .catch(log.handleException('botUtil.deleteAllUsers'))
   },
 
   echo: ({ bot, event, forceEchoText }) => {

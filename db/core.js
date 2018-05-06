@@ -8,8 +8,9 @@ DB.once('open', () => { console.log('DB opened') })
 
 // Users
 const UserDBSchema = new mongoose.Schema({
-  lineId: String,
-  lineName: String,
+  id: String,
+  name: String,
+  mobile: { type: String, match: /\d{10}/ },
   points: { type: Number, min: 0 }
 })
 const Users = mongoose.model('DBUsers', UserDBSchema)
@@ -21,6 +22,13 @@ const MerchandiseDBSchema = new mongoose.Schema({
   price: { type: Number, min: 0 }
 })
 const Merchandises = mongoose.model('DBMerchandises', MerchandiseDBSchema)
+
+// Orders
+// const OrderDBSchema = new mongoose.Schema({
+//   id: String,
+//   mid: String,
+//   price: { type: Number, min: 0 }
+// })
 
 const models = {
   Users,

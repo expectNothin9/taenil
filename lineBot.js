@@ -157,7 +157,7 @@ const botUtil = {
 
   deleteAllUsers: ({ bot, event, db }) => {
     const { replyToken } = event
-    return bot.deleteUsers()
+    return db.deleteUsers()
       .then((result) => {
         console.log(result)
         return bot.replyMessage(replyToken, {

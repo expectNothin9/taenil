@@ -54,7 +54,7 @@ const botUtil = {
           // strange, user should already added when follow bot account
           throw new Error('db user record not found')
         } else if (users.length === 1) {
-          return bot.replyMessage(replyToken, makeUserInfoTemplateMessage({ user }))
+          return bot.replyMessage(replyToken, makeUserInfoTemplateMessage({ user: users[0] }))
         } else {
           throw new Error('db has multiple records with same LINE id')
         }
@@ -64,13 +64,13 @@ const botUtil = {
 }
 
 const makeUserInfoTemplateMessage = ({ user }) => {
-  const message = {
+  return {
     type: 'template',
     altText: 'UserInfo',
     template: {
       type: 'buttons',
       thumbnailImageUrl: `https://dummyimage.com/600x600/6cd36c/ffffff.jpg&text=${user.name}`,
-      imageAspectRatio: 'square'
+      imageAspectRatio: 'square',
       imageSize: 'cover',
       imageBackgroundColor: '#ff5555',
       title: `${user.name}`,

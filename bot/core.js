@@ -101,6 +101,10 @@ function handlePostbackEvent (event) {
           }
         })
         .catch(log.handleException('handlePostbackEvent, BUY'))
+
+    // case 'SET_MOBILE':
+    //   // ...
+
     default:
       return Promise.resolve(null)
   }

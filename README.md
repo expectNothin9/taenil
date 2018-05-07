@@ -9,7 +9,8 @@ A side project of taenil
 | -------- | ---------------------------- | ----------- |
 | follow   | N/A                          | :o: Add user information when bot is added as a friend (or unblocked) |
 | message  | N/A                          | :o: Echo user's message back when not in keyword list |
-| message  | [MY_INFO]                    | :x: Display user info with available actions |
+| message  | [MY_INFO]                    | :o: Display user info with available actions |
+| postback | cmd=SET_MOBILE               | :x: Provide setting mobile prompt |
 | message  | [SHOPPING]                   | :o: Display shopping list |
 | postback | cmd=BUY&mid=${id}            | :x: Reply confirm to buy message when user tap buy button of merchandise on shopping list |
 | postback | cmd=CONFIRM_TO_BUY&mid=${id} | :x: Create order when user tap confirm to buy button, and reply order information |

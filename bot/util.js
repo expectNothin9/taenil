@@ -44,6 +44,45 @@ const botUtil = {
     return db.getMerchandises()
       .then((merchandises) => bot.replyMessage(event.replyToken, makeCarouselTemplateMessage({ altText, merchandises })))
       .catch(log.handleException('botUtil.showShoppingList'))
+  },
+
+  showUserInfo: ({ bot, event, db }) => {
+    const { source, replyToken } = event
+    return db.getUsers({ id: source.userId })
+      .then((users) => {
+        if (users.length === 0) {
+          // strange, user should already added when follow bot account
+          throw new Error('db user record not found')
+        } else if (users.length === 1) {
+          return bot.replyMessage(replyToken, makeUserInfoTemplateMessage({ user }))
+        } else {
+          throw new Error('db has multiple records with same LINE id')
+        }
+      })
+      .catch(log.handleException('botUtil.addUser'))
+  }
+}
+
+const makeUserInfoTemplateMessage = ({ user }) => {
+  const message = {
+    type: 'template',
+    altText: 'UserInfo',
+    template: {
+      type: 'buttons',
+      thumbnailImageUrl: `https://dummyimage.com/600x600/6cd36c/ffffff.jpg&text=${user.name}`,
+      imageAspectRatio: 'square'
+      imageSize: 'cover',
+      imageBackgroundColor: '#ff5555',
+      title: `${user.name}`,
+      text: `mobile: ${user.mobile}\npoint: ${user.points}pts`,
+      actions: [
+        {
+          type: 'postback',
+          label: user.mobile ? 'Modify mobile' : 'Set mobile (MUST)',
+          data: 'cmd=SET_MOBILE'
+        }
+      ]
+    }
   }
 }
 

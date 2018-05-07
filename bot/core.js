@@ -53,8 +53,8 @@ function handleMessageEvent (event) {
 
   const command = matched[1]
   switch (command) {
-    // case 'MY_INFO':
-    //   return botUtil.showUserInfo({ bot, event, db })
+    case 'MY_INFO':
+      return botUtil.showUserInfo({ bot, event, db })
     case 'SHOPPING':
       return botUtil.showShoppingList({ bot, event, db })
 

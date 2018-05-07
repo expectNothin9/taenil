@@ -49,7 +49,9 @@ function handleMessageEvent (event) {
   // command router
   const matched = message.text.match(/^\[([A-Z_]*)\]/)
   console.log('matched', matched)
-  if (!matched) { return botUtil.echo({ bot, event }) }
+  if (!matched) {
+    return botUtil.echo({ bot, event })
+  }
 
   const command = matched[1]
   switch (command) {
@@ -103,15 +105,7 @@ function handlePostbackEvent (event) {
         .catch(log.handleException('handlePostbackEvent, BUY'))
 
     case 'SET_MOBILE':
-      return db.updateUserOperation({ id: info.id, operation: 'SETTING_MOBILE' })
-        .then((user) => {
-          if (!user) {
-            throw new Error('db user record not found')
-          } else {
-            return botUtil.echo({ bot, event, forceEchoText: 'Input mobile please' })
-          }
-        })
-        .catch(log.handleException('handlePostbackEvent, SET_MOBILE'))
+      return botUtil.setUserMobilePrompt({ bot, event, db })
 
     default:
       return Promise.resolve(null)

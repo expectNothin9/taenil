@@ -34,9 +34,26 @@ const botUtil = {
       .then((profile) => profile.displayName)
       .then((userName) => bot.replyMessage(replyToken, {
         type: 'text',
-        text: `${userName}: ${echoText}`
+        text: `${userName}, ${echoText}`
       }))
       .catch(log.handleException('botUtil.echo'))
+  },
+
+  setUserMobilePrompt: ({ bot, event, db }) => {
+    const { source } = event
+    return db.getUsers({ id: source.userId })
+      .then((users) => {
+        if (users.length === 0) {
+          // strange, user should already added when follow bot account
+          throw new Error('db user record not found')
+        } else if (users.length === 1) {
+          return db.updateUserOperation({ id: users[0].id, operation: 'SETTING_MOBILE' })
+            .then((user) => botUtil.echo({ bot, event, forceEchoText: 'Input mobile please.' }))
+        } else {
+          throw new Error('db has multiple records with same LINE id')
+        }
+      })
+      .catch(log.handleException('botUtil.setUserMobilePrompt'))
   },
 
   showShoppingList: ({ bot, event, db }) => {
@@ -79,7 +96,7 @@ const makeUserInfoTemplateMessage = ({ user }) => {
         {
           type: 'postback',
           label: user.mobile ? 'Modify mobile' : 'Set mobile (MUST)',
-          data: `cmd=SET_MOBILE&id=${user.id}`
+          data: 'cmd=SET_MOBILE'
         }
       ]
     }

@@ -79,7 +79,7 @@ const makeUserInfoTemplateMessage = ({ user }) => {
         {
           type: 'postback',
           label: user.mobile ? 'Modify mobile' : 'Set mobile (MUST)',
-          data: 'cmd=SET_MOBILE'
+          data: `cmd=SET_MOBILE&id=${user.id}`
         }
       ]
     }

@@ -102,8 +102,16 @@ function handlePostbackEvent (event) {
         })
         .catch(log.handleException('handlePostbackEvent, BUY'))
 
-    // case 'SET_MOBILE':
-    //   // ...
+    case 'SET_MOBILE':
+      return db.updateUserOperation({ id: info.id, operation: 'SETTING_MOBILE' })
+        .then((user) => {
+          if (!user) {
+            throw new Error('db user record not found')
+          } else {
+            return botUtil.echo({ bot, event, forceEchoText: 'Input mobile please' })
+          }
+        })
+        .catch(log.handleException('handlePostbackEvent, SET_MOBILE'))
 
     default:
       return Promise.resolve(null)

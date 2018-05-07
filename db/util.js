@@ -3,8 +3,8 @@ const models = require('./core')
 
 const { Users, Merchandises } = models
 
-const addUser = ({ id, name, mobile, points = 0 }) => {
-  const user = new Users({ id, name, mobile, points })
+const addUser = ({ id, name, mobile, points = 0, operation = 'NONE' }) => {
+  const user = new Users({ id, name, mobile, points, operation })
   return user.save()
 }
 
@@ -18,6 +18,11 @@ const getUsers = ({ ...conditions } = {}) => {
   return conditions
     ? Users.find({ ...conditions })
     : Users.find({})
+}
+
+const updateUserOperation = ({ operation, ...conditions }) => {
+  // will return FOUND record BEFORE value UPDATED
+  return Users.findOneAndUpdate({ ...conditions }, { operation })
 }
 
 const updateUserPoints = ({ points, ...conditions }) => {
@@ -51,6 +56,7 @@ const db = {
   addUser,
   deleteUsers,
   getUsers,
+  updateUserOperation,
   updateUserPoints,
   getMerchandises
 }

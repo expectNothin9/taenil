@@ -11,7 +11,8 @@ const UserDBSchema = new mongoose.Schema({
   id: String,
   name: String,
   mobile: { type: String, match: /\d{10}/ },
-  points: { type: Number, min: 0 }
+  points: { type: Number, min: 0 },
+  operation: { type: String, enum: ['NONE', 'SETTING_MOBILE'] }
 })
 const Users = mongoose.model('DBUsers', UserDBSchema)
 

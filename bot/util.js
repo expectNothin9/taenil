@@ -50,10 +50,17 @@ const botUtil = {
     const { source, message } = event
     return db.getUser({ id: source.userId })
       .then((user) => {
-        return db.updateUserMobile({ id: user.id, mobile: message.text })
-          .then((user) => botUtil.echo({
-            bot, event, forceEchoText: `Mobile updated to ${message.text}.`
-          }))
+        if (/^\d{10}$/.test(message.text)) {
+          return db.updateUserMobile({ id: user.id, mobile: message.text })
+            .then((user) => botUtil.echo({
+              bot, event, forceEchoText: `Mobile updated to ${message.text}.`
+            }))
+        } else {
+          return db.updateUserOperation({ id: user.id, operation: 'NONE' })
+            .then((user) => botUtil.echo({
+              bot, event, forceEchoText: `${message.text}, invalid mobile format.`
+            }))
+        }
       })
       .catch(log.handleException('botUtil.setUserMobile'))
   },

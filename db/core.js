@@ -10,13 +10,7 @@ DB.once('open', () => { console.log('DB opened') })
 const UserDBSchema = new mongoose.Schema({
   id: String,
   name: String,
-  mobile: {
-    type: String,
-    validate: {
-      validator: (v) => { return /\d{10}/.test(v) },
-      message: '{VALUE} invalid, ex: 09123456789'
-    }
-  },
+  mobile: String,
   points: { type: Number, min: 0 },
   operation: { type: String, enum: ['NONE', 'SETTING_MOBILE'] }
 })

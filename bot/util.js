@@ -39,6 +39,25 @@ const botUtil = {
       .catch(log.handleException('botUtil.echo'))
   },
 
+  getUserOperation: ({ bot, event, db }) => {
+    const { source } = event
+    return db.getUser({ id: source.userId })
+      .then((user) => user.operation)
+      .catch(log.handleException('botUtil.getUserOperation'))
+  },
+
+  setUserMobile: ({ bot, event, db }) => {
+    const { source, message } = event
+    return db.getUser({ id: source.userId })
+      .then((user) => {
+        return db.updateUserMobile({ id: user.id, mobile: message.text })
+          .then((user) => botUtil.echo({
+            bot, event, forceEchoText: `Mobile updated to ${message.text}.`
+          }))
+      })
+      .catch(log.handleException('botUtil.setUserMobile'))
+  },
+
   setUserMobilePrompt: ({ bot, event, db }) => {
     const { source } = event
     return db.getUser({ id: source.userId })
@@ -52,7 +71,10 @@ const botUtil = {
   showShoppingList: ({ bot, event, db }) => {
     const altText = 'Shopping List'
     return db.getMerchandises()
-      .then((merchandises) => bot.replyMessage(event.replyToken, makeCarouselTemplateMessage({ altText, merchandises })))
+      .then((merchandises) => bot.replyMessage(
+        event.replyToken,
+        makeCarouselTemplateMessage({ altText, merchandises })
+      ))
       .catch(log.handleException('botUtil.showShoppingList'))
   },
 

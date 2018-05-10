@@ -46,11 +46,12 @@ function handleMessageEvent (event) {
   if (message.type !== 'text') {
     return Promise.resolve(null)
   }
+
   // command router
   const matched = message.text.match(/^\[([A-Z_]*)\]/)
   console.log('matched', matched)
   if (!matched) {
-    return botUtil.echo({ bot, event })
+    return handleOperationCheck(event)
   }
 
   const command = matched[1]
@@ -110,6 +111,20 @@ function handlePostbackEvent (event) {
     default:
       return Promise.resolve(null)
   }
+}
+
+function handleOperationCheck (event) {
+  return botUtil.getUserOperation({ bot, event, db })
+    .then((operation) => {
+      switch (operation) {
+        case 'SETTING_MOBILE':
+          return botUtil.setUserMobile({ bot, event, db })
+
+        default:
+          return botUtil.echo({ bot, event })
+      }
+    })
+    .catch(log.handleException('handleOperationCheck'))
 }
 
 const lineBotWebhookHandler = (req, res) => {

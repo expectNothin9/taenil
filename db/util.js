@@ -14,6 +14,22 @@ const deleteUsers = ({ ...conditions } = {}) => {
     : Users.remove({})
 }
 
+const getUser = ({ ...conditions } = {}) => {
+  if (!conditions) {
+    throw new Error('Cannot getUser without conditions')
+  }
+  return Users.find({ ...conditions })
+    .then((users) => {
+      if (users.length === 0) {
+        throw new Error('DB user record not found')
+      } else if (users.length === 1) {
+        return users[0]
+      } else {
+        throw new Error('DB has multiple records with same conditions')
+      }
+    })
+}
+
 const getUsers = ({ ...conditions } = {}) => {
   return conditions
     ? Users.find({ ...conditions })
@@ -55,6 +71,7 @@ const getMerchandises = ({ ...conditions } = {}) => {
 const db = {
   addUser,
   deleteUsers,
+  getUser,
   getUsers,
   updateUserOperation,
   updateUserPoints,

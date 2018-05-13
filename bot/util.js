@@ -145,7 +145,7 @@ const makeBuyConfirmTemplateMessage = ({ merchandise }) => {
           data: 'cmd=BUY_CONFIRMED'
         },
         {
-          tyep: 'message',
+          type: 'message',
           label: 'No',
           text: 'No'
         }

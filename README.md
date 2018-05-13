@@ -57,22 +57,21 @@ A side project of taenil
     	```
   - [x] Enable webhooks and set Webhook URL on LINE Developers console
     - ex: <YOUR_HEROKU_APP_NAME>.herokuapp.com/webhook
-* [ ] MongoDB on Heroku
+* [x] MongoDB on Heroku
   - [x] Open datebase with simple schema
     - Use [mongolab](https://devcenter.heroku.com/articles/mongolab) (Heroku add-ons, sandbox for free)
       - Adopt, `heroku addons:create mongolab`
       - Connection URI will be set in Heroku config, `heroku config:get MONGODB_URI
     `
       - App should use connection URI via `process.env.MONGODB_URI`
-  - [ ] Add, Get, Update, Delete
-    - [x] addUser, getUsers, updateUserPoints
-  - [ ] Integrate with LINE Messaging API flow
-    - [x] ADD_ME, SHOW_ALL_USERS, ADD_POINTS_TO_USER
+  - [x] Add, Get, Update, Delete
+  - [x] Integrate with LINE Messaging API flow
 * [x] Setup Rich Menu via [LINE@ MANAGER](https://admin-official.line.me/)
-* [ ] [Template Messages](https://developers.line.me/en/docs/messaging-api/reference/#template-messages) (Buttons, Confirm, Carousel, Image carousel)
-  - [x] Carousel template
+* [x] [Template Messages](https://developers.line.me/en/docs/messaging-api/reference/#template-messages) (Buttons, Confirm, Carousel, Image carousel)
+  - [x] Buttons , Confirm, Carousel template
+  - [ ] Image carousel template
   - [x] Handle postback events
-    - Example of postback data, `command=BUY&itemId=001`
+    - Example of postback data, `cmd=BUY&mid=001`
 * [x] [IFTTT](https://ifttt.com/discover) Applet, if PR, then send LINE message
 
 ## Notes

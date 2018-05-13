@@ -42,7 +42,7 @@ const db = {
         } else if (users.length === 1) {
           return users[0]
         } else {
-          throw new Error('DB has multiple records with same conditions')
+          throw new Error('DB has multiple user records with same conditions')
         }
       })
   },
@@ -66,6 +66,22 @@ const db = {
   updateUserPoints: ({ points, ...conditions }) => {
     // will return FOUND record BEFORE value UPDATED
     return Users.findOneAndUpdate({ ...conditions }, { points })
+  },
+
+  getMerchandise: ({ ...conditions }) => {
+    if (!conditions) {
+      throw new Error('Cannot getMerchandise without conditions')
+    }
+    return Merchandises.find({ ...conditions })
+      .then((merchandises) => {
+        if (merchandises.length === 0) {
+          throw new Error('DB merchandise record not found')
+        } else if (merchandises.length === 1) {
+          return merchandises[0]
+        } else {
+          throw new Error('DB has multiple merchandise records with same conditions')
+        }
+      })
   },
 
   getMerchandises: ({ ...conditions } = {}) => {

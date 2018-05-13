@@ -1,5 +1,6 @@
 const line = require('@line/bot-sdk')
 const db = require('../db/util')
+const botLib = require('./lib')
 const botUtil = require('./util')
 const botAdminUtil = require('./utilAdmin')
 const botDevUtil = require('./utilDev')
@@ -85,25 +86,10 @@ function handleMessageEvent (event) {
 //   postback: { data: 'cmd=BUY&mid=003' }
 // }
 function handlePostbackEvent (event) {
-  const kvs = event.postback.data.split('&')
-  const info = {}
-  kvs.forEach((kv) => {
-    const splitKV = kv.split('=')
-    info[splitKV[0]] = splitKV[1]
-  })
+  const info = botLib.getPostbackInfo(event)
   switch (info.cmd) {
     case 'BUY':
-      return db.getMerchandises({ id: info.mid })
-        .then((merchandises) => {
-          if (merchandises.length === 0) {
-            throw new Error('Merchandise not found')
-          } else if (merchandises.length === 1) {
-            return botUtil.echo({ bot, event, forceEchoText: `BUY ${merchandises[0].name}?` })
-          } else {
-            throw new Error('multiple merchandise records found with same id')
-          }
-        })
-        .catch(log.handleException('handlePostbackEvent, BUY'))
+      return botUtil.buyMerchandisePrompt({ bot, event, db })
 
     case 'SET_MOBILE':
       return botUtil.setUserMobilePrompt({ bot, event, db })

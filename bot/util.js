@@ -1,3 +1,4 @@
+const botLib = require('./lib')
 const log = require('../log')
 
 const botUtil = {
@@ -25,6 +26,16 @@ const botUtil = {
         }
       })
       .catch(log.handleException('botUtil.addUser'))
+  },
+
+  buyConfirmPrompt: ({ bot, event, db }) => {
+    const { replyToken } = event
+    const info = botLib.getPostbackInfo(event)
+    return db.getMerchandise({ id: info.mid })
+      .then((merchandise) =>
+        bot.replyMessage(replyToken, makeBuyConfirmTemplateMessage({ merchandise }))
+      )
+      .catch(log.handleException('botUtil.buyConfirmPrompt'))
   },
 
   echo: ({ bot, event, forceEchoText }) => {
@@ -70,7 +81,9 @@ const botUtil = {
     return db.getUser({ id: source.userId })
       .then((user) => {
         return db.updateUserOperation({ id: user.id, operation: 'SETTING_MOBILE' })
-          .then((user) => botUtil.echo({ bot, event, forceEchoText: 'Input mobile please.' }))
+          .then((user) =>
+            botUtil.echo({ bot, event, forceEchoText: 'Input mobile please.' })
+          )
       })
       .catch(log.handleException('botUtil.setUserMobilePrompt'))
   },
@@ -94,12 +107,13 @@ const botUtil = {
 }
 
 const makeUserInfoTemplateMessage = ({ user }) => {
+  const dummyImageUrl = 'https://dummyimage.com/600x600/6cd36c/ffffff.jpg'
   return {
     type: 'template',
     altText: 'UserInfo',
     template: {
       type: 'buttons',
-      thumbnailImageUrl: `https://dummyimage.com/600x600/6cd36c/ffffff.jpg&text=${user.name}`,
+      thumbnailImageUrl: `${dummyImageUrl}&text=${user.name}`,
       imageAspectRatio: 'square',
       imageSize: 'cover',
       imageBackgroundColor: '#ff5555',
@@ -110,6 +124,30 @@ const makeUserInfoTemplateMessage = ({ user }) => {
           type: 'postback',
           label: user.mobile ? 'Modify mobile' : 'Set mobile (MUST)',
           data: 'cmd=SET_MOBILE'
+        }
+      ]
+    }
+  }
+}
+
+const makeBuyConfirmTemplateMessage = ({ merchandise }) => {
+  const { name, price } = merchandise
+  return {
+    type: 'template',
+    altText: 'BuyingConfirm',
+    template: {
+      type: 'confirm',
+      text: `Are you sure to buy ${name}?\n It will cost ${price}pts.`,
+      actions: [
+        {
+          type: 'postback',
+          label: 'Yes',
+          data: 'cmd=BUY_CONFIRMED'
+        },
+        {
+          tyep: 'message',
+          label: 'No',
+          text: 'No'
         }
       ]
     }
@@ -129,9 +167,10 @@ const makeCarouselTemplateMessage = ({ altText, merchandises }) => {
 }
 
 const makeCarouselColumns = ({ merchandises }) => {
+  const dummyImageUrl = 'https://dummyimage.com/600x600/333333/ffffff.jpg'
   return merchandises.map((merchandise) => {
     return {
-      thumbnailImageUrl: `https://dummyimage.com/600x600/333333/ffffff.jpg&text=${merchandise.name}`,
+      thumbnailImageUrl: `${dummyImageUrl}&text=${merchandise.name}`,
       imageBackgroundColor: '#ff5555',
       title: `${merchandise.name.toUpperCase()}`,
       text: `${merchandise.name}, ${merchandise.price}pts/unit`,

@@ -89,7 +89,7 @@ function handlePostbackEvent (event) {
   const info = botLib.getPostbackInfo(event)
   switch (info.cmd) {
     case 'BUY':
-      return botUtil.buyMerchandisePrompt({ bot, event, db })
+      return botUtil.buyConfirmPrompt({ bot, event, db })
 
     case 'SET_MOBILE':
       return botUtil.setUserMobilePrompt({ bot, event, db })

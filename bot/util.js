@@ -142,7 +142,7 @@ const makeBuyConfirmTemplateMessage = ({ merchandise }) => {
         {
           type: 'postback',
           label: 'Yes',
-          data: `cmd=BUY_CONFIRMED&mid=${id}`
+          data: `cmd=BUY_CONFIRMED&mid=${id}&ts=${Date.now()}`
         },
         {
           type: 'message',

@@ -131,7 +131,7 @@ const makeUserInfoTemplateMessage = ({ user }) => {
 }
 
 const makeBuyConfirmTemplateMessage = ({ merchandise }) => {
-  const { name, price } = merchandise
+  const { id, name, price } = merchandise
   return {
     type: 'template',
     altText: 'BuyingConfirm',
@@ -142,7 +142,7 @@ const makeBuyConfirmTemplateMessage = ({ merchandise }) => {
         {
           type: 'postback',
           label: 'Yes',
-          data: 'cmd=BUY_CONFIRMED'
+          data: `cmd=BUY_CONFIRMED&mid=${id}`
         },
         {
           type: 'message',

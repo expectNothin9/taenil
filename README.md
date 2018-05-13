@@ -10,10 +10,11 @@ A side project of taenil
 | follow   | N/A                          | :o: Add user information when bot is added as a friend (or unblocked) |
 | message  | N/A                          | :o: Echo user's message back when not in keyword list |
 | message  | [MY_INFO]                    | :o: Display user info with available actions |
-| postback | cmd=SET_MOBILE               | :x: Provide setting mobile prompt |
+| postback | cmd=SET_MOBILE               | :o: Provide setting mobile prompt and change system operation state to SETTING_MOBILE |
+| message  | ANY                          | :o: While system operation state is SETTING_MOBILE, check mobile format and update user mobile, then state back to NONE |
 | message  | [SHOPPING]                   | :o: Display shopping list |
-| postback | cmd=BUY&mid=${id}            | :x: Reply confirm to buy message when user tap buy button of merchandise on shopping list |
-| postback | cmd=CONFIRM_TO_BUY&mid=${id} | :x: Create order when user tap confirm to buy button, and reply order information |
+| postback | cmd=BUY&mid=${id}            | :o: Reply buy confirm message when user tap buy button on shopping list |
+| postback | cmd=BUY_CONFIRMED&mid=${id}  | :x: Create order when user tap buy confirm button, and reply order information |
 
 ### Admin-only Features
 

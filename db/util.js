@@ -1,7 +1,7 @@
 const models = require('./core')
 // const log = require('./log')
 
-const { Users, Merchandises } = models
+const { Users, Merchandises, Orders } = models
 
 // const initMerchandise = () => {
 //   const candidates = [
@@ -88,6 +88,36 @@ const db = {
     return conditions
       ? Merchandises.find({ ...conditions })
       : Merchandises.find({})
+  },
+
+  createOrder: ({ userId, mid, qty = 1, price, shippingAddress = '' }) => {
+    const createTs = Date.now()
+    const status = 'NOT_SHIPPED'
+    const order = new Orders({ userId, mid, qty, price, createTs, shippingAddress, status })
+    return order.save()
+  },
+
+  getUserLatestOrder: ({ userId, ...conditions }) => {
+    if (!userId) {
+      throw new Error('Cannot getLatestOrder without userId')
+    }
+    // TOFIX: https://stackoverflow.com/questions/12467102/how-to-get-the-latest-and-oldest-record-in-mongoose-js-or-just-the-timespan-bet
+    return Orders.find({ userId, ...conditions })
+      .then((orders) => {
+        if (orders.length === 0) {
+          throw new Error('DB user latest order record not found')
+        } else if (orders.length === 1) {
+          return orders[0]
+        } else {
+          throw new Error('DB has multiple order records with same conditions')
+        }
+      })
+  },
+
+  getOrders: ({ ...conditions } = {}) => {
+    return conditions
+      ? Orders.find({ ...conditions })
+      : Orders.find({})
   }
 }
 

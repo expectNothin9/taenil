@@ -25,15 +25,21 @@ const MerchandiseDBSchema = new mongoose.Schema({
 const Merchandises = mongoose.model('DBMerchandises', MerchandiseDBSchema)
 
 // Orders
-// const OrderDBSchema = new mongoose.Schema({
-//   id: String,
-//   mid: String,
-//   price: { type: Number, min: 0 }
-// })
+const OrderDBSchema = new mongoose.Schema({
+  userId: String,
+  mid: String,
+  qty: { type: Number, min: 1 },
+  price: { type: Number, min: 0 },
+  createTs: Number,
+  shippingAddress: String,
+  status: { type: String, enum: ['NOT_SHIPPED', 'SHIPPED'] }
+})
+const Orders = mongoose.model('DBOrders', OrderDBSchema)
 
 const models = {
   Users,
-  Merchandises
+  Merchandises,
+  Orders
 }
 
 module.exports = models

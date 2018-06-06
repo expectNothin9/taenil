@@ -92,7 +92,16 @@ function handlePostbackEvent (event) {
       return botUtil.buyConfirmPrompt({ bot, event, db })
 
     case 'BUY_CONFIRMED':
-      return botUtil.echo({ bot, event, forceEchoText: 'Still working on.' })
+      // check buy confirm prompt effectiveness, 1min
+      if (Date.now() - info.ts > 60 * 1000) {
+        return botUtil.echo({
+          bot,
+          event,
+          forceEchoText: 'Out-of-date confirm prompt, please re-buy from shopping list.'
+        })
+      } else {
+        return botUtil.echo({ bot, event, forceEchoText: 'Still working on.' })
+      }
 
     case 'SET_MOBILE':
       return botUtil.setUserMobilePrompt({ bot, event, db })

@@ -94,7 +94,9 @@ function handlePostbackEvent (event) {
 
     case 'BUY_CONFIRMED':
       // check buy confirm prompt effectiveness, 1min
-      if (Date.now() - info.ts > 60 * 1000) {
+      const tsDiff = Date.now() - parseInt(info.ts)
+      const effectivenessThreshold = 60 * 1000 // 1min
+      if (tsDiff > effectivenessThreshold) {
         return botUtil.echo({
           bot,
           event,

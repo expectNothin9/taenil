@@ -87,6 +87,7 @@ function handleMessageEvent (event) {
 // }
 function handlePostbackEvent (event) {
   const info = botLib.getPostbackInfo(event)
+  console.log('postpack info', info)
   switch (info.cmd) {
     case 'BUY':
       return botUtil.buyConfirmPrompt({ bot, event, db })

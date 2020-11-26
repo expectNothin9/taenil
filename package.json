@@ -1,12 +1,11 @@
 {
   "name": "taenil",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A side project of taenil",
   "main": "index.js",
   "scripts": {
-    "deploy": "git push heroku master",
-    "lint": "standard",
     "start": "node .",
+    "dev": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,11 +20,7 @@
   },
   "homepage": "https://github.com/expectNothin9/taenil#readme",
   "dependencies": {
-    "@line/bot-sdk": "^6.0.1",
-    "express": "^4.16.3",
-    "mongoose": "^5.0.16"
+    "express": "^4.17.1"
   },
-  "devDependencies": {
-    "standard": "^11.0.1"
-  }
+  "devDependencies": {}
 }

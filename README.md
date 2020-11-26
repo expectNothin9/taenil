@@ -1,34 +1,5 @@
 # taenil
-A side project of taenil
-
-## Features
-
-### Public Features
-
-| Timing   | Keyword & Parameters         | Description |
-| -------- | ---------------------------- | ----------- |
-| follow   | N/A                          | :o: Add user information when bot is added as a friend (or unblocked) |
-| message  | N/A                          | :o: Echo user's message back when not in keyword list |
-| message  | [MY_INFO]                    | :o: Display user info with available actions |
-| postback | cmd=SET_MOBILE               | :o: Provide setting mobile prompt and change system operation state to SETTING_MOBILE |
-| message  | ANY                          | :o: While system operation state is SETTING_MOBILE, check mobile format and update user mobile, then state back to NONE |
-| message  | [SHOPPING]                   | :o: Display shopping list |
-| postback | cmd=BUY&mid=${id}            | :o: Reply buy confirm message when user tap buy button on shopping list |
-| postback | cmd=BUY_CONFIRMED&mid=${id}  | :x: Create order when user tap buy confirm button, and reply order information |
-
-### Admin-only Features
-
-| Timing   | Keyword & Parameters         | Description |
-| -------- | ---------------------------- | ----------- |
-| message  | [ALL_USERS]                  | :o: Show all users information |
-| message  | [DEPOSIT] ${name} ${points}  | :o: Add points to user with target LINE name |
-
-### Dev-only Features (!!REMOVE_WHEN_PRODUCTION!!)
-
-| Timing   | Keyword & Parameters         | Description |
-| -------- | ---------------------------- | ----------- |
-| message  | [ADD_ME]                     | :o: Add current user just like follow event |
-| message  | [DELETE_ALL_USERS]           | :o: Delete all users information, **DEV_ONLY**, **REMOVE_WHEN_PRODUCTION** |
+A side project of [taenil](https://serene-falls-99879.herokuapp.com/)
 
 ## Documents & Resources
 

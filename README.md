@@ -1,6 +1,13 @@
 # taenil
 A side project of [taenil](https://serene-falls-99879.herokuapp.com/)
 
+## Development
+
+```bash
+» npm ci
+» npm run dev
+```
+
 ## Documents & Resources
 
 * LINE [Messaging API](https://developers.line.me/en/docs/messaging-api/overview/)
@@ -8,6 +15,7 @@ A side project of [taenil](https://serene-falls-99879.herokuapp.com/)
 * [LINE@生活圈](http://at-blog.line.me/tw/)
 * Getting Started on [Heroku with Node.js](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
 * MongoLab MongoDB [Mongoose Node.js Demo on Heroku](https://github.com/mongolab/hello-mongoose)
+* [Dotenv + Nodemon](https://medium.com/@pdx.lucasm/dotenv-nodemon-a380629e8bff), using environment variables the right way
 
 ## Progress
 

@@ -16,6 +16,13 @@ function handleEvent(event) {
     return Promise.resolve(null)
   }
 
+  if (event.message.text === '/weather') {
+    return client.replyMessage(event.replyToken, {
+      type: 'text',
+      text: `Taipei\nSunnyvale\nBangkok`
+    })
+  }
+
   return client.replyMessage(event.replyToken, {
     type: 'text',
     text: event.message.text

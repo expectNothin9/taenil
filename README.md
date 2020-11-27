@@ -8,6 +8,11 @@ A side project of [taenil](https://serene-falls-99879.herokuapp.com/)
 
 ### Prerequisites
 
+Local `.env` file (**DO NOT COMMIT**)
+- LINE Messaging API `CHANNEL_ACCESS_TOKEN` and `CHANNEL_SECRET`, check [LINE Developer Guides](https://developers.line.biz/en/docs/messaging-api/getting-started/) for details.
+- Heroku `REDIS_URL` , visit https://dashboard.heroku.com/ and go to target app
+  - need to adopt **Heroku Redis** add-ons in **Resources** tab at first
+  - and `REDIS_URL` will be found in `Config Vars` of **Settings** tab
 LINE Messaging API `CHANNEL_ACCESS_TOKEN` and `CHANNEL_SECRET` in local `.env` file (**DO NOT COMMIT**), check [LINE Developer Guides](https://developers.line.biz/en/docs/messaging-api/getting-started/) for details.
 
 ### Install & Run

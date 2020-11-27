@@ -3,6 +3,8 @@ const line = require('@line/bot-sdk')
 const Redis = require("ioredis")
 const debug = require('debug')('R:index')
 
+const weather = require('./lib/weather')
+
 // setup line client
 const config = {
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
@@ -10,16 +12,18 @@ const config = {
 }
 
 const client = new line.Client(config)
-function handleEvent(event) {
+async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     debug(event)
     return Promise.resolve(null)
   }
 
   if (event.message.text === '/weather') {
+    const weathers = await weather.getWeathers()
+    const weatherTexts = weathers.map((weather) => `${weather.place} ${weather.temperature}°C`)
     return client.replyMessage(event.replyToken, {
       type: 'text',
-      text: `Taipei\nSunnyvale\nBangkok`
+      text: weatherTexts.join('\n')
     })
   }
 
@@ -46,6 +50,11 @@ app.get('/redis', async (req, res) => {
   const testRedisValue = await redis.get('TEST_REDIS_KEY')
   debug(`testRedisValue: ${testRedisValue}`)
   res.send(`testRedisValue: ${testRedisValue}`)
+})
+
+app.get('/weathers', async (req, res) => {
+  const weathers = await weather.getWeathers()
+  res.send(`weathers: ${JSON.stringify(weathers, null, 2)}`)
 })
 
 app.get('*', (req, res) => {

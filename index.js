@@ -29,7 +29,7 @@ function handleEvent(event) {
 }
 
 app.get('*', (req, res) => {
-  res.send(`!taenil olleh, env: ${envReady}`)
+  res.send(`!taenil olleh`)
 })
 
 const port = process.env.PORT || 3000

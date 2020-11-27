@@ -3,6 +3,12 @@ A side project of [taenil](https://serene-falls-99879.herokuapp.com/)
 
 ## Development
 
+### Prerequisites
+
+LINE Messaging API `CHANNEL_ACCESS_TOKEN` and `CHANNEL_SECRET` in local `.env` file (**DO NOT COMMIT**), check [LINE Developer Guides](https://developers.line.biz/en/docs/messaging-api/getting-started/) for details.
+
+### Install & Run
+
 ```bash
 » npm ci
 » npm run dev

@@ -20,17 +20,21 @@ async function handleEvent(event) {
 
   if (event.message.text === '/weather') {
     const weathers = await weather.getWeathers()
-    const weatherTexts = weathers.map((weather) => `${weather.place} ${weather.temperature}°C`)
+    const weatherTexts = weathers.map((weather) => {
+      const { place, temperature, main } = weather
+      return `${place} ${temperature}°C ${main}`
+    })
     return client.replyMessage(event.replyToken, {
       type: 'text',
       text: weatherTexts.join('\n')
     })
   }
 
-  return client.replyMessage(event.replyToken, {
-    type: 'text',
-    text: event.message.text
-  })
+  return Promise.resolve(null)
+  // return client.replyMessage(event.replyToken, {
+  //   type: 'text',
+  //   text: event.message.text
+  // })
 }
 
 // setup redis

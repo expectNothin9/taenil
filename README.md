@@ -29,6 +29,7 @@ A side project of [taenil](https://serene-falls-99879.herokuapp.com/)
 * Getting Started on [Heroku with Node.js](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
 * MongoLab MongoDB [Mongoose Node.js Demo on Heroku](https://github.com/mongolab/hello-mongoose)
 * [Dotenv + Nodemon](https://medium.com/@pdx.lucasm/dotenv-nodemon-a380629e8bff), using environment variables the right way
+* [TypeScript & Nodemon](https://levelup.gitconnected.com/typescript-nodemon-the-ultimate-setup-7200aa60cc8b) — The Ultimate Setup
 
 ## Progress
 

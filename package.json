@@ -4,9 +4,11 @@
   "description": "A side project of taenil",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
     "dev": "nodemon -r dotenv/config index.js",
     "dev:ts": "nodemon --config nodemon.json -r dotenv/config src/index.ts",
+    "build": "tsc",
+    "heroku-postbuild": "npm run build",
+    "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -29,6 +31,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.9",
+    "@types/ioredis": "^4.17.8",
     "@types/node": "^14.14.10",
     "@types/node-fetch": "^2.5.7",
     "dotenv": "^8.2.0",

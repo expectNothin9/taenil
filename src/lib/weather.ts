@@ -19,7 +19,7 @@ class Weather {
         APPID: API_KEY,
         units: 'metric'
       })
-      return fetch(`${API_URL}?${qs}`, undefined).then((resp) => resp.json())
+      return fetch(`${API_URL}?${qs}`).then((resp) => resp.json())
     })
     return Promise.all(tasks)
       .then((rawWeathers) => {

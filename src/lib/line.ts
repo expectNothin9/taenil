@@ -13,6 +13,8 @@ const client = new line.Client(config)
 
 export const lineMiddleware = line.middleware(config)
 
+const WEATHER_PATTERN = /^(IFTTT: )?\/weather/
+
 export const lineWebhookHandler = (req, res) => {
   Promise.all(req.body.events.map(async (event) => {
     if (event.type !== 'message' || event.message.type !== 'text') {
@@ -20,7 +22,7 @@ export const lineWebhookHandler = (req, res) => {
       return Promise.resolve(null)
     }
   
-    if (event.message.text === '/weather') {
+    if (WEATHER_PATTERN.test(event.message.text)) {
       const weathers = await weather.getWeathers()
       const weatherTexts = weathers.map((weather) => {
         const { place, temperature, main } = weather

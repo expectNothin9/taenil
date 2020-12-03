@@ -3,6 +3,7 @@ import * as express from 'express'
 import { lineMiddleware, lineWebhookHandler } from './lib/line'
 import redis from './lib/redis'
 import weather from './lib/weather'
+import { whistlingHandler } from './lib/whistling'
 
 const debug = require('debug')('R:index')
 
@@ -19,6 +20,8 @@ app.get('/weathers', async (req, res) => {
   const weathers = await weather.getWeathers()
   res.send(`weathers: ${JSON.stringify(weathers, null, 2)}`)
 })
+
+app.get('/whistling', whistlingHandler)
 
 app.get('*', (req, res) => {
   res.send('!st. ni taenil olleh')

@@ -2,25 +2,30 @@ import fetch from 'node-fetch'
 
 const debug = require('debug')('R:whistling')
 
-let IMAGES = ['https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e35/129060059_215457286655216_6062865869436442074_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=Iat2_GsVGy8AX8OruLy&tp=1&oh=622990499e73a3b39382d7aebc853f21&oe=5FF4BD93']
+let IMAGES = ['https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/fr/e15/s1080x1080/125424284_196841928624306_4631520509297317428_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=CxVQFWbeKRMAX-g1EnW&tp=1&oh=0d09e8a73dd2acabd149f00077caf88f&oe=5FF3E03C']
 
 const IG_URL = 'https://www.instagram.com/timliaoig.beauty/'
 const IMAGE_DISPLAY_URL_PATTERN = /"display_url":"https:\/\/instagram[^"]*"/g
 const IMAGE_PATTERN = /https:\/\/instagram[^"]*/
-async function prepareImages () {
+async function prepareImages (): Promise<string[]> {
+  debug('--> prepareImages')
   const igHtml = await fetch(IG_URL).then((resp) => resp.text())
   const matchedList = igHtml.match(IMAGE_DISPLAY_URL_PATTERN)
-  IMAGES = matchedList.map((rawUrl) => {
+  return matchedList.map((rawUrl) => {
     const imageUrl = rawUrl.match(IMAGE_PATTERN)
     return imageUrl[0].replace(/\\u0026/g, '&')
   })
 }
 
-// 1st images preparation
-prepareImages()
-
 export const whistlingHandler = async (req, res) => {
-  debug(IMAGES)
+  if (IMAGES.length === 1) {
+    try {
+      IMAGES = await prepareImages()
+      debug('--> prepareImages success')
+    } catch (error) {
+      debug('--> prepareImages exception', error)
+    }
+  }
   const randIdx = Math.floor(Math.random() * IMAGES.length)
   const imageUrl = IMAGES[randIdx]
   const fetchResp = await fetch(imageUrl)

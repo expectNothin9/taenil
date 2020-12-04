@@ -3,6 +3,7 @@ A side project of [taenil](https://serene-falls-99879.herokuapp.com/)
 
 ## Todos
 * [ ] lint
+* [ ] [puppeteer-heroku-buildpack](https://elements.heroku.com/buildpacks/jontewks/puppeteer-heroku-buildpack) and [Web Scraping](https://dev.to/dnature/web-scraping-scrape-data-from-your-instagram-page-with-nodejs-playwright-and-firebase-29d1)
 
 ## Development
 

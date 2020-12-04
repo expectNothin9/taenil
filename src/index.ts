@@ -1,4 +1,5 @@
 import * as express from 'express'
+import { instagram } from 'instagram-scraper-api'
 
 import { lineMiddleware, lineWebhookHandler } from './lib/line'
 import redis from './lib/redis'
@@ -22,6 +23,16 @@ app.get('/weathers', async (req, res) => {
 })
 
 app.get('/whistling', whistlingHandler)
+
+app.get('/ig', (req, res) => {
+  instagram
+    .user('timliaoig.beauty')
+    .then((user) => res.send(user))
+    .catch((error) => {
+      debug(error)
+      res.send(JSON.stringify(error))
+    });
+})
 
 app.get('*', (req, res) => {
   res.send('!st. ni taenil olleh')

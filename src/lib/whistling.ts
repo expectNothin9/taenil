@@ -10,7 +10,9 @@ const IMAGE_PATTERN = /https:\/\/instagram[^"]*/
 async function prepareImages (): Promise<string[]> {
   debug('--> prepareImages')
   const igHtml = await fetch(IG_URL).then((resp) => resp.text())
+  debug(igHtml)
   const matchedList = igHtml.match(IMAGE_DISPLAY_URL_PATTERN)
+  debug(matchedList)
   return matchedList.map((rawUrl) => {
     const imageUrl = rawUrl.match(IMAGE_PATTERN)
     return imageUrl[0].replace(/\\u0026/g, '&')

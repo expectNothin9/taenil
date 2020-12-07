@@ -3,7 +3,6 @@ A side project of [taenil](https://serene-falls-99879.herokuapp.com/)
 
 ## Todos
 * [ ] lint
-* [ ] [puppeteer-heroku-buildpack](https://elements.heroku.com/buildpacks/jontewks/puppeteer-heroku-buildpack) and [Web Scraping](https://dev.to/dnature/web-scraping-scrape-data-from-your-instagram-page-with-nodejs-playwright-and-firebase-29d1)
 
 ## Development
 
@@ -31,6 +30,7 @@ A side project of [taenil](https://serene-falls-99879.herokuapp.com/)
 * MongoLab MongoDB [Mongoose Node.js Demo on Heroku](https://github.com/mongolab/hello-mongoose)
 * [Dotenv + Nodemon](https://medium.com/@pdx.lucasm/dotenv-nodemon-a380629e8bff), using environment variables the right way
 * [TypeScript & Nodemon](https://levelup.gitconnected.com/typescript-nodemon-the-ultimate-setup-7200aa60cc8b) — The Ultimate Setup
+* [Puppeteer on Heroku](https://fabiofranchino.com/blog/create-website-screenshot-service-with-puppeteer-on-heroku/)
 
 ## Progress
 

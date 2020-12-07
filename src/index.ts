@@ -26,7 +26,7 @@ app.get('/weathers', async (req, res) => {
 
 app.get('/whistling', whistlingHandler)
 
-app.get('/scrap/ig', scrapIgHandler)
+app.get('/scrap/ig/:id', scrapIgHandler)
 
 app.use('/public', express.static(path.join(__dirname, '..', 'public')))
 

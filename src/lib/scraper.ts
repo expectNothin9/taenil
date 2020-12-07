@@ -6,7 +6,7 @@ const debug = require('debug')('R:scraper')
 const PUBLIC_PATH = path.join(__dirname, '../..', 'public')
 
 const IG_LOGIN_URL = 'https://www.instagram.com/accounts/login/'
-const IG_URL = 'https://www.instagram.com/timliaoig.beauty/'
+const IG_URL = 'https://www.instagram.com/'
 const IG = {
   acc: process.env.IG_ACC,
   pwd: process.env.IG_PWD
@@ -14,6 +14,7 @@ const IG = {
 
 
 export const scrapIgHandler = async (req, res) => {
+  const { id = 'timliaoig.beauty' } = req.params
   const browser = await puppeteer.launch({
     args: ['--no-sandbox']
   })
@@ -32,7 +33,7 @@ export const scrapIgHandler = async (req, res) => {
   await page.waitForTimeout(3000)
 
   // scrap images
-  await page.goto(IG_URL, {
+  await page.goto(`${IG_URL}${id}`, {
     waitUntil: ['load', 'networkidle0', 'domcontentloaded']
   })
   const IMAGES = await page.evaluate(() => {
@@ -43,7 +44,7 @@ export const scrapIgHandler = async (req, res) => {
     })
     return images
   })
-  debug('AFTER await page.evaluate')
+
   await page.screenshot({ path: path.join(PUBLIC_PATH, 'example.png') })
-  res.send(JSON.stringify(IMAGES, null, 2))
+  res.json({ images: IMAGES })
 }

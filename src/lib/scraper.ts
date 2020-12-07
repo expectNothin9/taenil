@@ -27,6 +27,6 @@ export const scrapIgHandler = async (req, res) => {
     return images
   })
   debug('AFTER await page.evaluate')
-  await page.screenshot({path: path.join(__dirname, '..', 'public/example.png')})
+  await page.screenshot({path: path.join(__dirname, '../..', 'public/example.png')})
   res.send(JSON.stringify(IMAGES, null, 2))
 }

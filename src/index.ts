@@ -28,7 +28,7 @@ app.get('/whistling', whistlingHandler)
 
 app.get('/scrap/ig', scrapIgHandler)
 
-app.use('/public', express.static(path.join(__dirname, 'public')))
+app.use('/public', express.static(path.join(__dirname, '..', 'public')))
 
 app.get('/ig', (req, res) => {
   instagram

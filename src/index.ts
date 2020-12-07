@@ -1,4 +1,5 @@
 import * as express from 'express'
+import * as path from 'path'
 import { instagram } from 'instagram-scraper-api'
 
 import { lineMiddleware, lineWebhookHandler } from './lib/line'
@@ -26,6 +27,8 @@ app.get('/weathers', async (req, res) => {
 app.get('/whistling', whistlingHandler)
 
 app.get('/scrap/ig', scrapIgHandler)
+
+app.use('/public', express.static(path.join(__dirname, 'public')))
 
 app.get('/ig', (req, res) => {
   instagram

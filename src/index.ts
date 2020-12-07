@@ -3,6 +3,7 @@ import { instagram } from 'instagram-scraper-api'
 
 import { lineMiddleware, lineWebhookHandler } from './lib/line'
 import redis from './lib/redis'
+import { scrapIgHandler } from './lib/scraper'
 import weather from './lib/weather'
 import { whistlingHandler } from './lib/whistling'
 
@@ -23,6 +24,8 @@ app.get('/weathers', async (req, res) => {
 })
 
 app.get('/whistling', whistlingHandler)
+
+app.get('/scrap/ig', scrapIgHandler)
 
 app.get('/ig', (req, res) => {
   instagram

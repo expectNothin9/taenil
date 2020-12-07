@@ -3,21 +3,38 @@ import * as path from 'path'
 
 const debug = require('debug')('R:scraper')
 
+const PUBLIC_PATH = path.join(__dirname, '../..', 'public')
+
+const IG_LOGIN_URL = 'https://www.instagram.com/accounts/login/'
 const IG_URL = 'https://www.instagram.com/timliaoig.beauty/'
+const IG = {
+  acc: process.env.IG_ACC,
+  pwd: process.env.IG_PWD
+}
+
 
 export const scrapIgHandler = async (req, res) => {
   const browser = await puppeteer.launch({
     args: ['--no-sandbox']
   })
-  debug('AFTER await puppeteer.launch')
   const page = await browser.newPage()
-  debug('AFTER await browser.newPage')
   await page.setViewport({ width: 1920, height: 1080 })
-  debug('AFTER await page.setViewport')
+
+  // login
+  await page.goto(IG_LOGIN_URL, {
+    waitUntil: ['load', 'networkidle0', 'domcontentloaded']
+  })
+  await page.focus('input[name=username]')
+  await page.keyboard.type(IG.acc)
+  await page.focus('input[name=password]')
+  await page.keyboard.type(IG.pwd)
+  await page.keyboard.press('Enter')
+  await page.waitForTimeout(3000)
+
+  // scrap images
   await page.goto(IG_URL, {
     waitUntil: ['load', 'networkidle0', 'domcontentloaded']
   })
-  debug('AFTER await page.goto')
   const IMAGES = await page.evaluate(() => {
     const images = []
     const imgElements = document.querySelectorAll('article div > img')
@@ -27,6 +44,6 @@ export const scrapIgHandler = async (req, res) => {
     return images
   })
   debug('AFTER await page.evaluate')
-  await page.screenshot({path: path.join(__dirname, '../..', 'public/example.png')})
+  await page.screenshot({ path: path.join(PUBLIC_PATH, 'example.png') })
   res.send(JSON.stringify(IMAGES, null, 2))
 }

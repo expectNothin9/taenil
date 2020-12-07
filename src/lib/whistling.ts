@@ -2,60 +2,47 @@ import fetch from 'node-fetch'
 
 const debug = require('debug')('R:whistling')
 
-let initialized = false
-let IMAGES = [
-  'https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e35/129060059_215457286655216_6062865869436442074_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=Iat2_GsVGy8AX8OruLy&tp=1&oh=622990499e73a3b39382d7aebc853f21&oe=5FF4BD93',
-  'https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/129610437_147409870050983_7968674528460593709_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=111&_nc_ohc=zjGcsuaL6okAX_74yN1&tp=1&oh=cf441cbf99324dd6505d907e3781c7eb&oe=5FF26A65',
-  'https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/128640322_391991862115575_1359175558711997182_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=103&_nc_ohc=BYZKa9uJFPoAX8VwQOs&tp=1&oh=6e5bb60c741b9da9a017022fcab12e46&oe=5FF32D5E',
-  'https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/128705483_886617318744617_5527222558638033270_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=105&_nc_ohc=Icz-8qDGawAAX8I5-ea&tp=1&oh=b5f4a018cd084f50b633e69e10248a72&oe=5FF2EA9F',
-  'https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e15/128537637_388779309107021_84447186478213937_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=105&_nc_ohc=7clWtsznCxMAX-AO7KP&tp=1&oh=0469d5ee1f47e3d8562f4dd80aa9785f&oe=5FF349C0',
-  'https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/127604017_372338830693653_2207798435492586644_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=109&_nc_ohc=DtYPM_5sk0wAX8zxM58&tp=1&oh=748711186e880dd89ae77dc51cb98f13&oe=5FF29254',
-  'https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/128157275_682955635740895_5951271873139283897_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=107&_nc_ohc=hE1VVpc7VacAX94qhnB&tp=1&oh=40a415de6d648f5dca86dbed408b2ce6&oe=5FF36BD4',
-  'https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/126901233_762829984576837_4966476486821014927_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=101&_nc_ohc=Ulp0qEKGIh4AX_NrDbs&tp=1&oh=bb82f1617dc93621555a46fbcde7cb55&oe=5FF36754',
-  'https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/127185824_374966933767692_8700050114737925098_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=100&_nc_ohc=AUpZJpJT_MYAX8Oc6ia&tp=1&oh=4d9f0249a9af1917d94c07c7aa63a62e&oe=5FF3361D',
-  'https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/126856210_1355949664755451_735404090630817605_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=107&_nc_ohc=NYtZ_p19jdQAX-CIZzu&tp=1&oh=bff5ac77b5ac740b0e21ed6cadec6e46&oe=5FF4D45E',
-  'https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e35/126872164_444975186900642_2575065639717451534_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=v9H8XGQ0dqsAX-eN8DV&tp=1&oh=287bbfb35dba4e0796f2c6c2d4291de4&oe=5FF37977',
-  'https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/e35/126907309_471341483830706_5505973112165390693_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=102&_nc_ohc=X2j9I0AQfmYAX99Zzgj&tp=1&oh=e9c346e1e8d23bbd40454d6ba90bb677&oe=5FF35A07',
-  'https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/125948565_349583476394185_7071920181371036706_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=101&_nc_ohc=Usrc29mGllkAX_W0qQJ&tp=1&oh=5015e31f4b705cb7e41a9a8f4480083d&oe=5FF481BA',
-  'https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/126857372_716588945627318_2961253738658315677_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=102&_nc_ohc=TZPlQI-DRMUAX_wqfM2&tp=1&oh=010e15cfd951a127fc8d42f63a1e430a&oe=5FF2F7D2',
-  'https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/126380860_432875921209298_1808808599555118137_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=102&_nc_ohc=EdorlISaqv0AX-yzLzw&tp=1&oh=5628e8d331ac5f06459baf5bc5519e74&oe=5FF4FA02',
-  'https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/126279550_377961313629955_5920492526849132257_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=107&_nc_ohc=mGz4F8eZ7-sAX-HvJQD&tp=1&oh=ec4a9008398bb8161476243b94854419&oe=5FF4EDC9',
-  'https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/127084983_3568389566551510_8668190763907501457_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=110&_nc_ohc=JenQzdc6rr8AX9ieNtl&tp=1&oh=c3e9076d5b5c4732c0fb808c3276ca2a&oe=5FF51135',
-  'https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/125828650_375611216847855_2765591406498732664_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=103&_nc_ohc=OQldfH6z7T0AX9_RcPm&tp=1&oh=51f612cea5caf7bb57f1f9d53cb2aba8&oe=5FF39F68',
-  'https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/125883131_709521546341356_6094621987208282232_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=95f3XVlJPOkAX9WEPk5&tp=1&oh=d8051b9cdc2c1c92b0ea3fc4c454f810&oe=5FF51E4E',
-  'https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/fr/e15/s1080x1080/125424284_196841928624306_4631520509297317428_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=CxVQFWbeKRMAX-g1EnW&tp=1&oh=0d09e8a73dd2acabd149f00077caf88f&oe=5FF3E03C',
-  'https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/fr/e15/s1080x1080/125441041_131276851776322_61846920766688626_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=110&_nc_ohc=-TDLQfEbHbsAX-nkSpV&tp=1&oh=6386ff4ca51d0d9f525978cbd5312d24&oe=5FF45DFA',
-  'https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e35/125184712_126197435699036_3230385583016309536_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=r9wRXzyr8f8AX-yjXa_&tp=1&oh=6bcc2687c9a8469e5474670ee98ac65d&oe=5FF4F1C3',
-  'https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/124999555_193298892276047_3129392142087476948_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=111&_nc_ohc=dHfti6DvItMAX-dVIX6&tp=1&oh=fff1f5266dba22cba572c91839f072ab&oe=5FF2DD6B',
-  'https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/125190983_202757381226718_6097409375387164658_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=110&_nc_ohc=bQMR6zlB6iMAX_ZY-oK&tp=1&oh=2f3bca8e83b59a3ced522871ce4306b7&oe=5FF1AA6C',
-  'https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/124884587_899860710857704_3355869962232623422_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=w8Bj7s3v3bcAX_kZUgm&tp=1&oh=cecc59d59fc5593d6f2a1c23ca357f19&oe=5FF38D72',
-  'https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/124851256_439664200358019_2585051340671846520_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=103&_nc_ohc=Qry-4mXBuL8AX-PFiCk&tp=1&oh=7b3a1e27ea8b235aa60651a93cb908e8&oe=5FF3B86F'
+const IMAGES = [
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e15/c0.90.720.720a/s640x640/129728188_715335752425216_526392071383016307_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=eWeRbk1N55EAX_8IDgG&tp=1&oh=0840aa0b00bb7a6ca3f25b3a4cfddca2&oe=5FF73B25",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e15/c0.90.720.720a/s640x640/129641449_376624290233959_5124986133501222664_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=z6ZCBhOraQsAX8_2J71&tp=1&oh=09f5f53c830a4167444e2374d56438d5&oe=5FF9411E",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/129060059_215457286655216_6062865869436442074_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=iDuAAgKfRXUAX--BH-M&tp=1&oh=a9a92813afa6a838f3cbd4f7f43a5bd6&oe=5FF90FA9",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/128640322_391991862115575_1359175558711997182_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=103&_nc_ohc=i4wdymu5FAsAX8Z79aQ&tp=1&oh=d30cd1c3c0cd180424a6f5f2a92d3cbf&oe=5FF85CFA",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e15/c0.90.720.720a/s640x640/128537637_388779309107021_84447186478213937_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=105&_nc_ohc=9DrjjhWPp_IAX9w0tIW&tp=1&oh=f2cde2233fc73b5859f6398e2abc35d6&oe=5FF75F9C",
+  "https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/127604017_372338830693653_2207798435492586644_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=109&_nc_ohc=mG7lV9RwDuwAX_ecSuP&tp=1&oh=857e7a6c65314362c5f5cc840a46f998&oe=5FF6D5F8",
+  "https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/126901233_762829984576837_4966476486821014927_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=101&_nc_ohc=klvctBBXgEsAX-3MYZP&tp=1&oh=b24531c3e1068ca6aa8fb804d1fd03fb&oe=5FF8FAF8",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/126872164_444975186900642_2575065639717451534_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=0wbB7AG2LcoAX9zzBiG&tp=1&oh=4db4b0b25f6acb689e42fdddd2687a71&oe=5FF647CD",
+  "https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/125948565_349583476394185_7071920181371036706_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=101&_nc_ohc=EWe-3dyZgpkAX-SnQg3&tp=1&oh=36a8ba3a74a81906fe8bf9396176a291&oe=5FF8241E",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/125828650_375611216847855_2765591406498732664_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=103&_nc_ohc=EHHaPz8rrMEAX-7WbrL&tp=1&oh=3e6dae12151c197b28dad4872b8cb696&oe=5FF871C4",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/125424284_196841928624306_4631520509297317428_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=cCW_A3MG93MAX-5kr1z&tp=1&oh=9dadc0bb01bc67733776667d9a9c28b2&oe=5FF77973",
+  "https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/e15/c180.0.720.720a/s640x640/125441041_131276851776322_61846920766688626_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=110&_nc_ohc=KuVBiV1LV5IAX_sJWDq&tp=1&oh=5e1832901ac427b36b0399c33b48ba24&oe=5FF5C789",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/125184712_126197435699036_3230385583016309536_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=PxF4q9nGQf0AX9eH4Uj&tp=1&oh=58db4447d8880e2a9ee860d2df73c58b&oe=5FF609F9",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/124884587_899860710857704_3355869962232623422_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=ODWbDLKGRasAX9nimAJ&tp=1&oh=cc2742890d2844bc8723c7fa1943cded&oe=5FF898D6",
+  "https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/124267533_364143271477586_303647286434977102_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=102&_nc_ohc=MKM6xS1FwV0AX9rYX5G&tp=1&oh=a541e8dda5bc97efdad4dfbf3021df2b&oe=5FF7E7F9",
+  "https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.125.1440.1440a/s640x640/124185092_1414566285545002_7914913424158868878_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=110&_nc_ohc=zHlkPkB-DJUAX8yWnDO&tp=1&oh=237c3a242ae6dfa43e3b5b6c59d03540&oe=5FF955E8",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/123196422_2770292019877697_4559603521541557065_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=105&_nc_ohc=gqFHAjjp7FYAX83qLJQ&tp=1&oh=1913256cbb2535d1e950863cd4c53856&oe=5FF6EDD2",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e15/c0.90.720.720a/s640x640/123439244_372714677312216_5773464815646381894_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=-6YULKRGIb0AX9tCjjG&tp=1&oh=5eb97b4f8c1e32638daa9a193632729e&oe=5FF7E085",
+  "https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/e15/c0.90.720.720a/s640x640/123265569_366754054750957_965066978699242568_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=101&_nc_ohc=iTtl2SZ__wQAX9Bk9RB&tp=1&oh=2f75b19e40088a694f006b1fff46ae23&oe=5FF64A35",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/123263191_769506973607994_2359149955771110188_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=wPxcSjSznBQAX9yCW-b&tp=1&oh=7ecaacb9619e6f5d0528c8e11dc09555&oe=5FF6CCA5",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/122449946_356304902139231_3808260020124454688_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=103&_nc_ohc=9yHmrY3we1kAX8hJ4mF&tp=1&oh=967626ff3009d63d7b8c253233a80c91&oe=5FF6FBB5",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/122764337_2968770816691123_2278714474160768516_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=107&_nc_ohc=DCeqgL9eqgQAX87KiDV&tp=1&oh=53a4d71bbfc01c5aa2578c3a0ccc9dd9&oe=5FF88195",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/122807458_361845205065127_837583111793177519_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=107&_nc_ohc=WeiBB37gQXUAX-jEnnR&tp=1&oh=1af1c3d5074238506f466b7638899d68&oe=5FF5AA07",
+  "https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/122786482_870097313731106_7580464501479510103_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=102&_nc_ohc=LdS76cAWWOQAX_lUwo-&tp=1&oh=52bd0f14986f95aef13d4e7533ce41be&oe=5FF8F02B"
 ]
 
-const IG_URL = 'https://www.instagram.com/timliaoig.beauty/'
-const IMAGE_DISPLAY_URL_PATTERN = /"display_url":"https:\/\/instagram[^"]*"/g
-const IMAGE_PATTERN = /https:\/\/instagram[^"]*/
-async function prepareImages (): Promise<string[]> {
-  debug('--> prepareImages')
-  const igHtml = await fetch(IG_URL).then((resp) => resp.text())
-  const matchedList = igHtml.match(IMAGE_DISPLAY_URL_PATTERN)
-  return matchedList.map((rawUrl) => {
-    const imageUrl = rawUrl.match(IMAGE_PATTERN)
-    return imageUrl[0].replace(/\\u0026/g, '&')
-  })
-}
+// const IG_URL = 'https://www.instagram.com/timliaoig.beauty/'
+// const IMAGE_DISPLAY_URL_PATTERN = /"display_url":"https:\/\/instagram[^"]*"/g
+// const IMAGE_PATTERN = /https:\/\/instagram[^"]*/
+// async function prepareImages (): Promise<string[]> {
+//   debug('--> prepareImages')
+//   const igHtml = await fetch(IG_URL).then((resp) => resp.text())
+//   const matchedList = igHtml.match(IMAGE_DISPLAY_URL_PATTERN)
+//   return matchedList.map((rawUrl) => {
+//     const imageUrl = rawUrl.match(IMAGE_PATTERN)
+//     return imageUrl[0].replace(/\\u0026/g, '&')
+//   })
+// }
 
 export const whistlingHandler = async (req, res) => {
-  if (!initialized) {
-    initialized = true
-    try {
-      IMAGES = await prepareImages()
-      debug('--> prepareImages success')
-    } catch (error) {
-      debug('--> prepareImages exception', error)
-    }
-  }
-
   const randIdx = Math.floor(Math.random() * IMAGES.length)
   const imageUrl = IMAGES[randIdx]
   const fetchResp = await fetch(imageUrl)

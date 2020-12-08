@@ -30,16 +30,6 @@ app.get('/scrap/ig/:id', scrapIgHandler)
 
 app.use('/public', express.static(path.join(__dirname, '..', 'public')))
 
-app.get('/ig', (req, res) => {
-  instagram
-    .user('timliaoig.beauty')
-    .then((user) => res.send(user))
-    .catch((error) => {
-      debug(error)
-      res.send(JSON.stringify(error))
-    });
-})
-
 app.get('*', (req, res) => {
   res.send('!st. ni taenil olleh')
 })

@@ -1,8 +1,12 @@
 import fetch from 'node-fetch'
+import { Request, Response } from 'express'
+// import makeDebug from 'debug'
 
-const debug = require('debug')('R:whistling')
+// const debug = makeDebug('R:whistling')
 
 const IMAGES = [
+  "https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/129767558_294891661922770_3300864178769475444_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=110&_nc_ohc=O_ecJMDzVjsAX8M9byr&tp=1&oh=74bb113f04aa21ba0cd727960113dad0&oe=5FF80F0D",
+"https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e15/c0.90.720.720a/s640x640/129767560_679157409449315_4449038080473098712_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=lO0NGishr7MAX-pc6t3&tp=1&oh=158062760f836b8ae05d8989b66dbff4&oe=5FF6E274",
   "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e15/c0.90.720.720a/s640x640/129728188_715335752425216_526392071383016307_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=eWeRbk1N55EAX_8IDgG&tp=1&oh=0840aa0b00bb7a6ca3f25b3a4cfddca2&oe=5FF73B25",
   "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e15/c0.90.720.720a/s640x640/129641449_376624290233959_5124986133501222664_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=z6ZCBhOraQsAX8_2J71&tp=1&oh=09f5f53c830a4167444e2374d56438d5&oe=5FF9411E",
   "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/129060059_215457286655216_6062865869436442074_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=iDuAAgKfRXUAX--BH-M&tp=1&oh=a9a92813afa6a838f3cbd4f7f43a5bd6&oe=5FF90FA9",
@@ -29,20 +33,7 @@ const IMAGES = [
   "https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/122786482_870097313731106_7580464501479510103_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=102&_nc_ohc=LdS76cAWWOQAX_lUwo-&tp=1&oh=52bd0f14986f95aef13d4e7533ce41be&oe=5FF8F02B"
 ]
 
-// const IG_URL = 'https://www.instagram.com/timliaoig.beauty/'
-// const IMAGE_DISPLAY_URL_PATTERN = /"display_url":"https:\/\/instagram[^"]*"/g
-// const IMAGE_PATTERN = /https:\/\/instagram[^"]*/
-// async function prepareImages (): Promise<string[]> {
-//   debug('--> prepareImages')
-//   const igHtml = await fetch(IG_URL).then((resp) => resp.text())
-//   const matchedList = igHtml.match(IMAGE_DISPLAY_URL_PATTERN)
-//   return matchedList.map((rawUrl) => {
-//     const imageUrl = rawUrl.match(IMAGE_PATTERN)
-//     return imageUrl[0].replace(/\\u0026/g, '&')
-//   })
-// }
-
-export const whistlingHandler = async (req, res) => {
+export const whistlingHandler = async (req: Request, res: Response): Promise<void> => {
   const randIdx = Math.floor(Math.random() * IMAGES.length)
   const imageUrl = IMAGES[randIdx]
   const fetchResp = await fetch(imageUrl)

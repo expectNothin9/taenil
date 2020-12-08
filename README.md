@@ -2,7 +2,6 @@
 A side project of [taenil](https://serene-falls-99879.herokuapp.com/)
 
 ## Todos
-* [ ] lint
 
 ## Development
 

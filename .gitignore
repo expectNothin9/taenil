@@ -61,4 +61,4 @@ typings/
 dist/
 
 # dev only
-public/example.png
+snapshot/

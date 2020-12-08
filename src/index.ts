@@ -1,10 +1,8 @@
 import * as express from 'express'
-import * as path from 'path'
-import { instagram } from 'instagram-scraper-api'
 
 import { lineMiddleware, lineWebhookHandler } from './lib/line'
 import redis from './lib/redis'
-import { scrapIgHandler } from './lib/scraper'
+import { scrapIgHandler, SNAPSHOT_PATH } from './lib/scraper'
 import weather from './lib/weather'
 import { whistlingHandler } from './lib/whistling'
 
@@ -28,7 +26,7 @@ app.get('/whistling', whistlingHandler)
 
 app.get('/scrap/ig/:id', scrapIgHandler)
 
-app.use('/public', express.static(path.join(__dirname, '..', 'public')))
+app.use('/snapshot', express.static(SNAPSHOT_PATH))
 
 app.get('*', (req, res) => {
   res.send('!st. ni taenil olleh')

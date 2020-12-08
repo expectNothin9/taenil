@@ -3,7 +3,7 @@ import * as path from 'path'
 
 const debug = require('debug')('R:scraper')
 
-const PUBLIC_PATH = path.join(__dirname, '../..', 'public')
+export const SNAPSHOT_PATH = path.join(__dirname, '../..', 'snapshot')
 
 const IG_LOGIN_URL = 'https://www.instagram.com/accounts/login/'
 const IG_URL = 'https://www.instagram.com/'
@@ -33,10 +33,19 @@ export const scrapIgHandler = async (req, res) => {
   await page.waitForTimeout(3000)
 
   // scrap images
-  await page.goto(`${IG_URL}${id}`, {
-    waitUntil: ['load', 'networkidle0', 'domcontentloaded']
-  })
-  const IMAGES = await page.evaluate(() => {
+  let IMAGES = []
+  const targetUrl = `${IG_URL}${id}`
+  try {
+    await page.goto(targetUrl, {
+      waitUntil: ['load', 'networkidle0', 'domcontentloaded']
+    })
+  } catch (error) {
+    debug(`page.goto ${targetUrl} failed`, error)
+    res.status(500).json({ error })
+    return false
+  }
+
+  IMAGES = await page.evaluate(() => {
     const images = []
     const imgElements = document.querySelectorAll('article div > img')
     imgElements.forEach((img) => {
@@ -45,6 +54,6 @@ export const scrapIgHandler = async (req, res) => {
     return images
   })
 
-  await page.screenshot({ path: path.join(PUBLIC_PATH, 'example.png') })
+  await page.screenshot({ path: path.join(SNAPSHOT_PATH, 'log.png') })
   res.json({ images: IMAGES })
 }

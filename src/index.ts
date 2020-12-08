@@ -6,14 +6,11 @@ import { scrapIgHandler, SNAPSHOT_PATH } from './lib/scraper'
 import weather from './lib/weather'
 import { whistlingHandler } from './lib/whistling'
 
-const debug = require('debug')('R:index')
-
 // setup express server
 const app = express()
 
 app.get('/redis', async (req, res) => {
   const testRedisValue = await redis.get('TEST_REDIS_KEY')
-  debug(`testRedisValue: ${testRedisValue}`)
   res.send(`testRedisValue: ${testRedisValue}`)
 })
 

@@ -1,7 +1,9 @@
 import * as puppeteer from 'puppeteer'
 import * as path from 'path'
+import { Request, Response } from 'express'
+import makeDebug from 'debug'
 
-const debug = require('debug')('R:scraper')
+const debug = makeDebug('R:scraper')
 
 export const SNAPSHOT_PATH = path.join(__dirname, '../..', 'snapshot')
 
@@ -12,8 +14,7 @@ const IG = {
   pwd: process.env.IG_PWD
 }
 
-
-export const scrapIgHandler = async (req, res) => {
+export const scrapIgHandler = async (req: Request, res: Response): Promise<void> => {
   const { id = 'timliaoig.beauty' } = req.params
   const browser = await puppeteer.launch({
     args: ['--no-sandbox']
@@ -42,7 +43,7 @@ export const scrapIgHandler = async (req, res) => {
   } catch (error) {
     debug(`page.goto ${targetUrl} failed`, error)
     res.status(500).json({ error })
-    return false
+    return
   }
 
   IMAGES = await page.evaluate(() => {

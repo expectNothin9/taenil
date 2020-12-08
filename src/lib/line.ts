@@ -1,21 +1,30 @@
-import * as line from '@line/bot-sdk'
+import {
+  // main APIs
+  Client,
+  middleware,
+  // types
+  MessageAPIResponseBase,
+  WebhookEvent,
+} from '@line/bot-sdk'
+import { Request, Response } from 'express'
+import makeDebug from 'debug'
 
 import weather from './weather'
 
-const debug = require('debug')('R:lib:line')
+const debug = makeDebug('R:lib:line')
 
 const config = {
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.CHANNEL_SECRET
 }
 
-const client = new line.Client(config)
+const client = new Client(config)
 
-export const lineMiddleware = line.middleware(config)
+export const lineMiddleware = middleware(config)
 
 const WEATHER_PATTERN = /^(IFTTT: )?\/weather/
 
-export const lineWebhookHandler = (req, res) => {
+export const lineWebhookHandler = (req: Request, res: Response): void => {
   Promise.all(req.body.events.map(async (event) => {
     if (event.type !== 'message' || event.message.type !== 'text') {
       debug(event)
@@ -39,7 +48,7 @@ export const lineWebhookHandler = (req, res) => {
   .then((result) => res.json(result))
 }
 
-export async function handleEvent(event) {
+export async function handleEvent(event: WebhookEvent): Promise<MessageAPIResponseBase|null> {
   if (event.type !== 'message' || event.message.type !== 'text') {
     debug(event)
     return Promise.resolve(null)

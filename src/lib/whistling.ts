@@ -5,8 +5,32 @@ import { Request, Response } from 'express'
 // const debug = makeDebug('R:whistling')
 
 const IMAGES = [
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.150.1200.1200a/s640x640/130453120_374293930539024_8636544064152452062_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=100&_nc_ohc=Q3KacUKhZqkAX82ddBW&tp=1&oh=eae4cb6f5ee793f8f1e54ad4aab44dff&oe=5FF93500",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.150.1200.1200a/s640x640/130423357_190767439377860_3785195638661499445_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=108&_nc_ohc=PWFtfjMpzpEAX_FRQIS&tp=1&oh=8789a979155e61ed0900ac04f8e0b363&oe=5FF88A90",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.150.1200.1200a/s640x640/129790846_384216276219771_6271027194454684085_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=103&_nc_ohc=7C4W6N8SRhQAX_haGiR&tp=1&oh=10ffd1555398522e75a18a88efa1c91d&oe=5FF9ECCA",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.150.1200.1200a/s640x640/130090865_1087469625028833_8599711034213846053_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=1&_nc_ohc=SIUtINdxuisAX_OPRGR&tp=1&oh=efc22d95eb800f0357fdc49990d8e85e&oe=5FF9923F",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.150.1200.1200a/s640x640/129048379_437476327245145_7645122037223957206_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=101&_nc_ohc=kBvjB9MOjA8AX8WgeVW&tp=1&oh=4601f0e137f1e1caddf8d4f42981e7e2&oe=5FF8EF7E",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.149.1198.1198a/s640x640/129086906_823661331764362_1245653512683751353_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=110&_nc_ohc=xCJNoDTy4h8AX_0E_ej&tp=1&oh=20f45094d073a68ffbd1226b106baca7&oe=5FFBBA99",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.149.1198.1198a/s640x640/128958185_3456311907757847_8362672217021368336_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=111&_nc_ohc=FZUtZ-PgpjsAX_vt8cV&tp=1&oh=3390c9156d245424056f1994da819a4c&oe=5FFB195E",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.150.1200.1200a/s640x640/128467014_131153028591841_6161495877222459235_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=1&_nc_ohc=sK6U8ajc92QAX9YVL1V&tp=1&oh=1aaab86d74a4eaead2a6dbed5ea9c937&oe=5FF8C538",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.148.1196.1196a/s640x640/128271478_2073509589452894_4713776431105007392_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=102&_nc_ohc=XaG5AqSXChYAX8NKnDT&tp=1&oh=eb4342ea972cf91ddcd927f99d07e4be&oe=5FF85C37",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.63.1074.1074a/s640x640/127764244_221069509429366_3330904439129549721_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=110&_nc_ohc=BBTXqU4NI0cAX9rPUAJ&tp=1&oh=c5b2dc2af08420e2cdb9c527facb2355&oe=5FF8E4FD",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.150.1200.1200a/s640x640/128049571_418339342523394_7631087936465821398_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=106&_nc_ohc=APmdrXHWCg0AX-5K262&tp=1&oh=e77b87d6198a0d81697860b4bc7b1966&oe=5FF8E061",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.150.1200.1200a/s640x640/127609929_293436198669844_649513454305910907_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=104&_nc_ohc=Pds19deFMPwAX-pI9Ht&tp=1&oh=3d9a3a373ae4722d2ab34992af33f9b1&oe=5FF88313",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.147.1197.1197a/s640x640/127822893_800826930648043_9001176962434505314_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=107&_nc_ohc=szaqRkUzDdAAX9s55y7&tp=1&oh=b20d70c4857a4ec70030ad814afffde4&oe=5FFB7284",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.150.1200.1200a/s640x640/127134056_817309589018664_8116980940655278215_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=100&_nc_ohc=n3G6OT16cgkAX-YIKwV&tp=1&oh=44bfe047ee9a93f8f4a1a165b1866b56&oe=5FFA8E6A",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/127153892_672744240278998_5210052207068794649_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=110&_nc_ohc=iZnS7E8jrekAX-vNQYT&tp=1&oh=7f134e273c78b63e15a00800a0ac574f&oe=5FF9C389",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.142.1189.1189a/s640x640/127018710_737618697109871_6312166895299158733_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=111&_nc_ohc=AgAveNBfvIMAX-OetjA&tp=1&oh=fc0e64ea2dc20836868831e26d484340&oe=5FFAD6F6",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.150.1200.1200a/s640x640/126858333_732909200671432_4288179092775728596_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=104&_nc_ohc=T1bgaOzTteYAX-gtAGU&tp=1&oh=4e5c5b20f7d765fb7cadeb038a0f2398&oe=5FF8C819",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.150.1200.1200a/s640x640/126817181_399233591499508_7393840702085501418_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=104&_nc_ohc=g1KLtIr4qlkAX_uTT4x&tp=1&oh=a1803b876e0c2a46bbef0e24dd24de1f&oe=5FF972AF",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c54.0.728.728a/s640x640/126597505_710706666226990_1020583486429456352_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=110&_nc_ohc=R1FNwDC41c4AX_j-07J&tp=1&oh=699214b26bffd03aa73ee214cc8916e6&oe=5FFA00B7",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.150.1200.1200a/s640x640/126056273_379524379930255_3630850582303804778_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=107&_nc_ohc=FR_v3nzx-r4AX97B4Jr&tp=1&oh=f3b5224b7fa18e655998f35ad425d5a3&oe=5FFA0A90",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/s640x640/126262186_849549492521009_3274474543883311883_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=105&_nc_ohc=92D5nCQNeM8AX-9O7dc&tp=1&oh=adfefff8c77669d4260ce5c93eb9b015&oe=5FF96523",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.150.1200.1200a/s640x640/125937221_408307656866986_209599750039119339_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=110&_nc_ohc=0qJMUnen9LYAX8Y9K7M&tp=1&oh=f4fb7090a2552f3caa85c0f66b01e189&oe=5FFB4ABB",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/126096992_843648699730979_4346843372372662909_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=111&_nc_ohc=uCKdq2eEa1sAX96ReFx&tp=1&oh=5490084f6ca964f5a771cb924857d19b&oe=5FFB1AFB",
+  "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.150.1200.1200a/s640x640/125491505_862373761240312_1588689190560450789_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=104&_nc_ohc=wEjO5nBIkqIAX8lYBJJ&tp=1&oh=5bd7c28d2b3cb878237ec02ee9ef6a0d&oe=5FF94EA6",
   "https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/129767558_294891661922770_3300864178769475444_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=110&_nc_ohc=O_ecJMDzVjsAX8M9byr&tp=1&oh=74bb113f04aa21ba0cd727960113dad0&oe=5FF80F0D",
-"https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e15/c0.90.720.720a/s640x640/129767560_679157409449315_4449038080473098712_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=lO0NGishr7MAX-pc6t3&tp=1&oh=158062760f836b8ae05d8989b66dbff4&oe=5FF6E274",
+  "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e15/c0.90.720.720a/s640x640/129767560_679157409449315_4449038080473098712_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=lO0NGishr7MAX-pc6t3&tp=1&oh=158062760f836b8ae05d8989b66dbff4&oe=5FF6E274",
   "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e15/c0.90.720.720a/s640x640/129728188_715335752425216_526392071383016307_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=eWeRbk1N55EAX_8IDgG&tp=1&oh=0840aa0b00bb7a6ca3f25b3a4cfddca2&oe=5FF73B25",
   "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/e15/c0.90.720.720a/s640x640/129641449_376624290233959_5124986133501222664_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=z6ZCBhOraQsAX8_2J71&tp=1&oh=09f5f53c830a4167444e2374d56438d5&oe=5FF9411E",
   "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/129060059_215457286655216_6062865869436442074_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=iDuAAgKfRXUAX--BH-M&tp=1&oh=a9a92813afa6a838f3cbd4f7f43a5bd6&oe=5FF90FA9",
@@ -32,10 +56,11 @@ const IMAGES = [
   "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/122807458_361845205065127_837583111793177519_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=107&_nc_ohc=WeiBB37gQXUAX-jEnnR&tp=1&oh=1af1c3d5074238506f466b7638899d68&oe=5FF5AA07",
   "https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/122786482_870097313731106_7580464501479510103_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=102&_nc_ohc=LdS76cAWWOQAX_lUwo-&tp=1&oh=52bd0f14986f95aef13d4e7533ce41be&oe=5FF8F02B"
 ]
+let idx = 0
 
 export const whistlingHandler = async (req: Request, res: Response): Promise<void> => {
-  const randIdx = Math.floor(Math.random() * IMAGES.length)
-  const imageUrl = IMAGES[randIdx]
+  const imageUrl = IMAGES[idx]
+  idx = idx + 1 === IMAGES.length ? 0 : idx + 1
   const fetchResp = await fetch(imageUrl)
   const buffer = await fetchResp.buffer()
   res.set('Content-Type', 'image/jpeg')

@@ -26,8 +26,9 @@ const WEATHER_PATTERN = /^(IFTTT: )?\/weather/
 
 export const lineWebhookHandler = (req: Request, res: Response): void => {
   Promise.all(req.body.events.map(async (event) => {
+    debug(JSON.stringify(event, null, 2))
     if (event.type !== 'message' || event.message.type !== 'text') {
-      debug(event)
+      // debug(event)
       return Promise.resolve(null)
     }
   

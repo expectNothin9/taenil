@@ -56,13 +56,13 @@ const IMAGES = [
   "https://instagram.ftpe12-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/122807458_361845205065127_837583111793177519_n.jpg?_nc_ht=instagram.ftpe12-1.fna.fbcdn.net&_nc_cat=107&_nc_ohc=WeiBB37gQXUAX-jEnnR&tp=1&oh=1af1c3d5074238506f466b7638899d68&oe=5FF5AA07",
   "https://instagram.ftpe12-2.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/c0.180.1440.1440a/s640x640/122786482_870097313731106_7580464501479510103_n.jpg?_nc_ht=instagram.ftpe12-2.fna.fbcdn.net&_nc_cat=102&_nc_ohc=LdS76cAWWOQAX_lUwo-&tp=1&oh=52bd0f14986f95aef13d4e7533ce41be&oe=5FF8F02B"
 ]
-let idx = 0
 
 export const whistlingHandler = async (req: Request, res: Response): Promise<void> => {
+  const idx = Math.floor(Math.random() * IMAGES.length)
   const imageUrl = IMAGES[idx]
-  idx = idx + 1 === IMAGES.length ? 0 : idx + 1
   const fetchResp = await fetch(imageUrl)
   const buffer = await fetchResp.buffer()
+  res.set('Cache-Control', 'no-store')
   res.set('Content-Type', 'image/jpeg')
   res.send(buffer)
 }

@@ -4,6 +4,7 @@ import {
   middleware,
   // types
   MessageAPIResponseBase,
+  TextMessage,
   WebhookEvent,
 } from '@line/bot-sdk'
 import { Request, Response } from 'express'
@@ -21,6 +22,23 @@ const config = {
 const client = new Client(config)
 
 export const lineMiddleware = middleware(config)
+
+const GROUP_ID = process.env.LINE_GROUP_ID
+export const lineTestHandler = (req: Request, res: Response): void => {
+  if (!GROUP_ID) {
+    return
+  }
+  const message: TextMessage = {
+    type: 'text',
+    text: 'Hello World!'
+  }
+  client.pushMessage(GROUP_ID, message)
+    .then(() => res.send('ok'))
+    .catch((error) => {
+      debug('client.pushMessage() failed', error)
+      res.send('error')
+    })
+}
 
 const WEATHER_PATTERN = /^(IFTTT: )?\/weather/
 

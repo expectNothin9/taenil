@@ -1,6 +1,10 @@
 import * as express from 'express'
 
-import { lineMiddleware, lineWebhookHandler } from './lib/line'
+import {
+  lineMiddleware,
+  lineTestHandler,
+  lineWebhookHandler
+} from './lib/line'
 import redis from './lib/redis'
 import { scrapIgHandler, SNAPSHOT_PATH } from './lib/scraper'
 import weather from './lib/weather'
@@ -8,6 +12,8 @@ import { whistlingHandler } from './lib/whistling'
 
 // setup express server
 const app = express()
+
+app.use('/snapshot', express.static(SNAPSHOT_PATH))
 
 app.get('/redis', async (req, res) => {
   const testRedisValue = await redis.get('TEST_REDIS_KEY')
@@ -23,7 +29,7 @@ app.get('/whistling', whistlingHandler)
 
 app.get('/scrap/ig/:id', scrapIgHandler)
 
-app.use('/snapshot', express.static(SNAPSHOT_PATH))
+app.get('/line/test', lineTestHandler)
 
 app.get('*', (req, res) => {
   res.send('!st. ni taenil olleh')

@@ -2,7 +2,7 @@ import * as express from 'express'
 
 import {
   lineMiddleware,
-  lineTestHandler,
+  lineCommandHandler,
   lineWebhookHandler
 } from './lib/line'
 import redis from './lib/redis'
@@ -29,7 +29,7 @@ app.get('/whistling', whistlingHandler)
 
 app.get('/scrap/ig/:id', scrapIgHandler)
 
-app.get('/line/test', lineTestHandler)
+app.get('/line/command/:command', lineCommandHandler)
 
 app.get('*', (req, res) => {
   res.send('!st. ni taenil olleh')

@@ -24,14 +24,42 @@ const client = new Client(config)
 export const lineMiddleware = middleware(config)
 
 const GROUP_ID = process.env.LINE_GROUP_ID
-export const lineTestHandler = (req: Request, res: Response): void => {
+export const lineCommandHandler = (req: Request, res: Response): void => {
+  const { command } = req.params
   if (!GROUP_ID) {
     return
   }
   const message: TextMessage = {
     type: 'text',
-    text: 'Hello World!'
+    text: `command: ${command}`
   }
+
+  switch (command) {
+    case 'test-quick-replay':
+      message.quickReply = {
+        items: [
+          {
+            type: 'action',
+            action: {
+              type: 'message',
+              label: 'label A',
+              text: 'quick replay text of label A'
+            }
+          },
+          {
+            type: 'action',
+            action: {
+              type: 'postback',
+              label: 'label B',
+              data: 'from=test-quick-replay&action=B',
+              text: 'quick replay postback of label B'
+            }
+          }
+        ]
+      }
+      break
+  }
+
   client.pushMessage(GROUP_ID, message)
     .then(() => res.send('ok'))
     .catch((error) => {

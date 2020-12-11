@@ -1,4 +1,8 @@
+import makeDebug from 'debug'
+
 import { shuffle } from '../util/array'
+
+const debug = makeDebug('R:lib:beautyPageant')
 
 const IMAGES = [
   "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.150.1200.1200a/s640x640/130453120_374293930539024_8636544064152452062_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=100&_nc_ohc=Q3KacUKhZqkAX82ddBW&tp=1&oh=eae4cb6f5ee793f8f1e54ad4aab44dff&oe=5FF93500",
@@ -78,6 +82,10 @@ class BeautyPageant {
   randomCandidates () {
     const shuffledCandidates = shuffle([ ...this.candidates ])
     return shuffledCandidates.slice(0, 2)
+  }
+
+  recordMatch (match: string|string[] , win: string|string[]) {
+    debug(match, win)
   }
 }
 

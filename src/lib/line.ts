@@ -10,6 +10,7 @@ import {
   WebhookEvent,
 } from '@line/bot-sdk'
 import { Request, Response } from 'express'
+import * as querystring from 'querystring'
 import makeDebug from 'debug'
 
 import beautyPageant from './beautyPageant'
@@ -44,7 +45,7 @@ export const lineBeautyPageantHandler = (req: Request, res: Response): void => {
       action: {
         type: 'postback',
         label,
-        data: `action=beautyPageant&match=${candidateIds}&win=${candidate.id}`,
+        data: `action=beauty-pageant&match=${candidateIds}&win=${candidate.id}`,
         displayText: label
       }
     })
@@ -66,55 +67,23 @@ export const lineBeautyPageantHandler = (req: Request, res: Response): void => {
     })
 }
 
-export const lineCommandHandler = (req: Request, res: Response): void => {
-  const { command } = req.params
-  if (!GROUP_ID) {
-    return
-  }
-  const message: TextMessage = {
-    type: 'text',
-    text: `command: ${command}`
-  }
-
-  switch (command) {
-    case 'test-quick-reply':
-      message.quickReply = {
-        items: [
-          {
-            type: 'action',
-            action: {
-              type: 'message',
-              label: 'label A',
-              text: 'quick replay text of label A'
-            }
-          },
-          {
-            type: 'action',
-            action: {
-              type: 'postback',
-              label: 'label B',
-              data: 'from=test-quick-replay&action=B',
-              displayText: 'quick replay postback of label B'
-            }
-          }
-        ]
-      }
-      break
-  }
-  debug(message)
-  client.pushMessage(GROUP_ID, message)
-    .then(() => res.send('ok'))
-    .catch((error) => {
-      debug('client.pushMessage() failed', error)
-      res.send('error')
-    })
-}
-
 const WEATHER_PATTERN = /^(IFTTT: )?\/weather/
 
 export const lineWebhookHandler = (req: Request, res: Response): void => {
   Promise.all(req.body.events.map(async (event) => {
     debug(JSON.stringify(event, null, 2))
+    if (event.type === 'postback') {
+      const { data } = event.postback
+      const parsedData = querystring.parse(data)
+      if (parsedData.action === 'beauty-pageant') {
+        const { match, win } = parsedData
+        beautyPageant.recordMatch(match, win)
+        return Promise.resolve(null)
+      } else {
+        return Promise.resolve(null)
+      }
+    }
+
     if (event.type !== 'message' || event.message.type !== 'text') {
       // debug(event)
       return Promise.resolve(null)

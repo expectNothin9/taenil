@@ -75,9 +75,11 @@ export const lineWebhookHandler = (req: Request, res: Response): void => {
     if (event.type === 'postback') {
       const { data } = event.postback
       const parsedData = querystring.parse(data)
+      debug('parsedData', parsedData)
       if (parsedData.action === 'beauty-pageant') {
         const { match, win } = parsedData
         const stats = beautyPageant.recordMatch(<string>match, <string>win)
+        debug('stats', stats)
         return client.replyMessage(event.replyToken, {
           type: 'text',
           text: stats

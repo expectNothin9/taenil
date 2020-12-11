@@ -2,6 +2,7 @@ import * as express from 'express'
 
 import {
   lineMiddleware,
+  lineBeautyPageantHandler,
   lineCommandHandler,
   lineWebhookHandler
 } from './lib/line'
@@ -28,6 +29,8 @@ app.get('/weathers', async (req, res) => {
 app.get('/whistling', whistlingHandler)
 
 app.get('/scrap/ig/:id', scrapIgHandler)
+
+app.get('/line/command/beauty-pageant', lineBeautyPageantHandler)
 
 app.get('/line/command/:command', lineCommandHandler)
 

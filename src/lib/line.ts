@@ -5,11 +5,14 @@ import {
   // types
   MessageAPIResponseBase,
   TextMessage,
+  ImageMessage,
+  QuickReply,
   WebhookEvent,
 } from '@line/bot-sdk'
 import { Request, Response } from 'express'
 import makeDebug from 'debug'
 
+import beautyPageant from './beautyPageant'
 import weather from './weather'
 
 const debug = makeDebug('R:lib:line')
@@ -24,6 +27,45 @@ const client = new Client(config)
 export const lineMiddleware = middleware(config)
 
 const GROUP_ID = process.env.LINE_GROUP_ID
+
+export const lineBeautyPageantHandler = (req: Request, res: Response): void => {
+  if (!GROUP_ID) {
+    return
+  }
+  const candidates = beautyPageant.randomCandidates()
+  const candidateIds = candidates.map((candidate) => (candidate.id)).join(',')
+  const quickReply: QuickReply = {
+    items: []
+  }
+  const messages: ImageMessage[] = candidates.map((candidate) => {
+    const label = `No.${candidate.id} 妹`
+    quickReply.items.push({
+      type: 'action',
+      action: {
+        type: 'postback',
+        label,
+        data: `action=beautyPageant&match=${candidateIds}&win=${candidate.id}`,
+        displayText: label
+      }
+    })
+    return {
+      type: 'image',
+      originalContentUrl: candidate.image,
+      previewImageUrl: candidate.image
+    }
+  })
+  
+  // only the last message's quickReply will be processed by LINE
+  messages[messages.length - 1].quickReply = quickReply
+
+  client.pushMessage(GROUP_ID, messages)
+    .then(() => res.send('ok'))
+    .catch((error) => {
+      debug('client.pushMessage() failed', error)
+      res.send('error')
+    })
+}
+
 export const lineCommandHandler = (req: Request, res: Response): void => {
   const { command } = req.params
   if (!GROUP_ID) {

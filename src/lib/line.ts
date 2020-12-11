@@ -35,7 +35,7 @@ export const lineCommandHandler = (req: Request, res: Response): void => {
   }
 
   switch (command) {
-    case 'test-quick-replay':
+    case 'test-quick-reply':
       message.quickReply = {
         items: [
           {

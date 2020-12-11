@@ -59,7 +59,7 @@ export const lineCommandHandler = (req: Request, res: Response): void => {
       }
       break
   }
-
+  debug(message)
   client.pushMessage(GROUP_ID, message)
     .then(() => res.send('ok'))
     .catch((error) => {

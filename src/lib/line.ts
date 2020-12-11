@@ -77,8 +77,11 @@ export const lineWebhookHandler = (req: Request, res: Response): void => {
       const parsedData = querystring.parse(data)
       if (parsedData.action === 'beauty-pageant') {
         const { match, win } = parsedData
-        beautyPageant.recordMatch(match, win)
-        return Promise.resolve(null)
+        const stats = beautyPageant.recordMatch(<string>match, <string>win)
+        return client.replyMessage(event.replyToken, {
+          type: 'text',
+          text: stats
+        })
       } else {
         return Promise.resolve(null)
       }

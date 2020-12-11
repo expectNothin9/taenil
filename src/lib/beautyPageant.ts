@@ -61,7 +61,7 @@ interface Candidate {
   id: number
   image: string
   compete: number
-  win: 0
+  win: number
 }
 
 class BeautyPageant {
@@ -84,8 +84,26 @@ class BeautyPageant {
     return shuffledCandidates.slice(0, 2)
   }
 
-  recordMatch (match: string|string[] , win: string|string[]) {
-    debug(match, win)
+  recordMatch (match: string , win: string): string {
+    const candidateIdsInMatch = match.split(',').map((candidate) => parseInt(candidate))
+    const parsedWin = parseInt(win)
+    let stats = '💌'
+    this.candidates = this.candidates.map((candidate) => {
+      if (candidateIdsInMatch.includes(candidate.id)) {
+        const accumulatedCompete = candidate.compete + 1
+        const accumulatedWin = parsedWin === candidate.id
+          ? candidate.win + 1
+          : candidate.win
+        stats += `\nNo.${candidate.id} 妹: ${accumulatedWin}/${accumulatedCompete}`
+        return {
+          ...candidate,
+          compete: accumulatedCompete,
+          win: accumulatedWin
+        }
+      }
+      return candidate
+    })
+    return stats
   }
 }
 

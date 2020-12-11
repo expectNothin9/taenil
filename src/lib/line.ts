@@ -52,7 +52,7 @@ export const lineCommandHandler = (req: Request, res: Response): void => {
               type: 'postback',
               label: 'label B',
               data: 'from=test-quick-replay&action=B',
-              text: 'quick replay postback of label B'
+              displayText: 'quick replay postback of label B'
             }
           }
         ]

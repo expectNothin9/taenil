@@ -79,7 +79,7 @@ class BeautyPageant {
     }))
   }
 
-  randomCandidates () {
+  randomCandidates (): Candidate[] {
     const shuffledCandidates = shuffle([ ...this.candidates ])
     return shuffledCandidates.slice(0, 2)
   }

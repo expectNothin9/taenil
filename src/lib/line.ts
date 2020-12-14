@@ -104,6 +104,26 @@ export const lineWebhookHandler = (req: Request, res: Response): void => {
         type: 'text',
         text: weatherTexts.join('\n')
       })
+    } else if (event.message.text === '/test') {
+      const candidates = beautyPageant.randomCandidates()
+      const candidateIds = candidates.map((candidate) => (candidate.id)).join(',')
+      return client.replyMessage(event.replyToken, {
+        type: 'template',
+        altText: 'beauty-pageant',
+        template: {
+          type: 'image_carousel',
+          columns: candidates.map((candidate) => {
+            return {
+              imageUrl: candidate.image,
+              action: {
+                type: 'postback',
+                label: `No.${candidate.id} 妹`,
+                data: `action=beauty-pageant&match=${candidateIds}&win=${candidate.id}`
+              }
+            }
+          })
+        }
+      })
     }
   
     return Promise.resolve(null)

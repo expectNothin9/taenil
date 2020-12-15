@@ -3,6 +3,8 @@ import * as path from 'path'
 import { Request, Response } from 'express'
 import makeDebug from 'debug'
 
+import beautyPageant from './beautyPageant'
+
 const debug = makeDebug('R:scraper')
 
 export const SNAPSHOT_PATH = path.join(__dirname, '../..', 'snapshot')
@@ -26,15 +28,21 @@ export const scrapIgHandler = async (req: Request, res: Response): Promise<void>
   await page.goto(IG_LOGIN_URL, {
     waitUntil: ['load', 'networkidle0', 'domcontentloaded']
   })
-  await page.focus('input[name=username]')
-  await page.keyboard.type(IG.acc)
-  await page.focus('input[name=password]')
-  await page.keyboard.type(IG.pwd)
-  await page.keyboard.press('Enter')
-  await page.waitForTimeout(3000)
+
+  try {
+    await page.focus('input[name=username]')
+    await page.keyboard.type(IG.acc)
+    await page.focus('input[name=password]')
+    await page.keyboard.type(IG.pwd)
+    await page.keyboard.press('Enter')
+    await page.waitForTimeout(3000)
+  } catch (error) {
+    await page.screenshot({ path: path.join(SNAPSHOT_PATH, 'log.png') })
+    res.status(500).json({ error })
+    return
+  }
 
   // scrap images
-  let IMAGES = []
   const targetUrl = `${IG_URL}${id}`
   try {
     await page.goto(targetUrl, {
@@ -46,15 +54,17 @@ export const scrapIgHandler = async (req: Request, res: Response): Promise<void>
     return
   }
 
-  IMAGES = await page.evaluate(() => {
-    const images = []
+  const images = await page.evaluate(() => {
+    const imgSrcs = []
     const imgElements = document.querySelectorAll('article div > img')
     imgElements.forEach((img) => {
-      images.push(img.getAttribute('src'))
+      imgSrcs.push(img.getAttribute('src'))
     })
-    return images
+    return imgSrcs
   })
-
   await page.screenshot({ path: path.join(SNAPSHOT_PATH, 'log.png') })
-  res.json({ images: IMAGES })
+
+  // await beautyPageant.syncNewImages(images)
+
+  res.json({ images })
 }

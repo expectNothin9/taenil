@@ -1,5 +1,6 @@
 import makeDebug from 'debug'
 
+import redis from './redis'
 import { shuffle } from '../util/array'
 
 const debug = makeDebug('R:lib:beautyPageant')
@@ -66,7 +67,10 @@ interface Candidate {
 
 class BeautyPageant {
   candidates: Candidate[]
+  redisKey: string
+
   constructor (images: string[]) {
+    this.redisKey = '_BP_STATE_'
     this.candidates = this.initializeCandidates(images)
   }
 
@@ -105,8 +109,42 @@ class BeautyPageant {
     })
     return stats
   }
+
+  async syncNewImages (newImages: string[] = []): Promise<void> {
+    const redisValue = await redis.get(this.redisKey)
+    const state = redisValue ? JSON.parse(redisValue) : { candidates: [] }
+
+    if (newImages.length !== 0) {
+      // TODO: performance can be approved
+      if (state.candidates.length === 0) {
+        // empty on redis
+        debug('empty on redis')
+        this.candidates = this.initializeCandidates(newImages)
+      } else {
+        // find latest synced image index
+        const lastestCandidate = state.candidates[0]
+        const lastestSyncedIndex = newImages.findIndex((image) => (image === lastestCandidate.image))
+        debug('lastestSyncedIndex', lastestSyncedIndex)
+        // sync necessary
+        const needSyncImages = lastestSyncedIndex === -1 ? newImages : newImages.slice(0, lastestSyncedIndex)
+        debug('needSyncImages', needSyncImages)
+        this.candidates = [
+          ...this.initializeCandidates(needSyncImages),
+          ...state.candidates.map((candidate) => ({
+            ...candidate,
+            id: candidate.id + lastestSyncedIndex
+          }))
+        ]
+      }
+    }
+    const newState = { candidates: this.candidates }
+    await redis.set(this.redisKey, JSON.stringify(newState))
+    // debug('newState', newState)
+  }
 }
 
 const beautyPageant = new BeautyPageant(IMAGES)
+
+beautyPageant.syncNewImages(IMAGES)
 
 export default beautyPageant

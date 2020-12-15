@@ -29,6 +29,7 @@ export const lineMiddleware = middleware(config)
 
 const GROUP_ID = process.env.LINE_GROUP_ID
 
+// FIXME: use template message instead
 export const lineBeautyPageantHandler = (req: Request, res: Response): void => {
   if (!GROUP_ID) {
     return

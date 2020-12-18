@@ -5,6 +5,7 @@ A side project of [taenil](https://serene-falls-99879.herokuapp.com/)
 - [ ] heroku app crashed
   > heroku[router]: at=error code=H20 desc="App boot timeout" method=HEAD path="/line/command/beauty-pageant"
   > heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/line/command/beauty-pageant"
+- [ ] scrap ig is not workable on heroku (`headless` cause error), change to offline
 
 ## Development
 

@@ -87,36 +87,33 @@ class BeautyPageant {
     return stats
   }
 
-  // async syncNewImages (newImages: string[] = []): Promise<void> {
-  //   const redisValue = await redis.get(this.redisKey)
-  //   const redisState = redisValue ? JSON.parse(redisValue) : { candidates: [] }
-  //   const lengthOnRedis = redisState.candidates.length
-  //   debug('length before sync', lengthOnRedis)
-  //   if (newImages.length !== 0) {
-  //     // TODO: performance can be approved
-  //     if (lengthOnRedis === 0) {
-  //       // empty on redis
-  //       debug('empty on redis')
-  //       this.match.candidates = this.initializeCandidates(newImages)
-  //     } else {
-  //       // find latest synced image index
-  //       const lastestCandidate = redisState.candidates[lengthOnRedis - 1]
-  //       const lastestSyncedIndex = newImages.findIndex((image) => (image === lastestCandidate.image))
-  //       debug('lastestSyncedIndex', lastestSyncedIndex)
-  //       // sync necessary
-  //       const needSyncImages = lastestSyncedIndex === -1 ? newImages : newImages.slice(lastestSyncedIndex + 1, newImages.length)
-  //       debug('needSyncImages', needSyncImages)
-  //       this.match.candidates = [
-  //         ...redisState.candidates,
-  //         ...this.initializeCandidates(needSyncImages, lengthOnRedis)
-  //       ]
-  //     }
-  //   }
-  //   debug('length after sync', this.match.candidates.length)
-  //   const newState = { candidates: this.match.candidates }
-  //   await redis.set(this.redisKey, JSON.stringify(newState))
-  //   // debug('newState', newState)
-  // }
+  async syncNewImagesToRedis (newImages: string[] = []): Promise<void> {
+    if (!this.isReady) {
+      debug('not ready to sync new images')
+      return
+    }
+    if (newImages.length === 0) {
+      debug('no new images to sync')
+      return
+    }
+
+    // find latest synced image index
+    const currentCandidates = this.match.candidates
+    const lastestCandidate = currentCandidates[currentCandidates.length - 1]
+    const lastestSyncedIndex = newImages.findIndex((image) => (image === lastestCandidate.image))
+    debug('lastestSyncedIndex', lastestSyncedIndex)
+    // sync necessary
+    const needSyncImages = lastestSyncedIndex === -1 ? newImages : newImages.slice(lastestSyncedIndex + 1, newImages.length)
+    debug('needSyncImages', needSyncImages)
+    this.match.candidates = [
+      ...currentCandidates,
+      ...this.initializeCandidates(needSyncImages, currentCandidates.length)
+    ]
+
+    debug('length after sync', this.match.candidates.length)
+    const newState = { match: this.match }
+    await redis.set(this.redisKey, JSON.stringify(newState))
+  }
 }
 
 // NOTICE: in beauty pageant, candidates should be in ASCENDING order

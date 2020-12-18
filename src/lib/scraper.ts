@@ -63,8 +63,9 @@ export const scrapIgHandler = async (req: Request, res: Response): Promise<void>
     return imgSrcs
   })
   await page.screenshot({ path: path.join(SNAPSHOT_PATH, 'log.png') })
-
-  // await beautyPageant.syncNewImages(images)
+  // images MUST in ASCENDING order
+  images.reverse()
+  await beautyPageant.syncNewImagesToRedis(images)
 
   res.json({ images })
 }

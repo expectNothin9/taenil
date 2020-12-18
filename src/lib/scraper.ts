@@ -19,17 +19,17 @@ const IG = {
 export const scrapIgHandler = async (req: Request, res: Response): Promise<void> => {
   const { id = 'timliaoig.beauty' } = req.params
   const browser = await puppeteer.launch({
-    args: ['--no-sandbox']
+    args: ['--no-sandbox'],
+    headless: false // this fix the error of ig login
   })
   const page = await browser.newPage()
   await page.setViewport({ width: 1920, height: 1080 })
 
   // login
-  await page.goto(IG_LOGIN_URL, {
-    waitUntil: ['load', 'networkidle0', 'domcontentloaded']
-  })
-
   try {
+    await page.goto(IG_LOGIN_URL, {
+      waitUntil: ['load', 'networkidle0', 'domcontentloaded']
+    })
     await page.focus('input[name=username]')
     await page.keyboard.type(IG.acc)
     await page.focus('input[name=password]')

@@ -65,7 +65,7 @@ class BeautyPageant {
     return shuffledCandidates.slice(0, 2)
   }
 
-  recordMatch (match: string , win: string): string {
+  async recordMatch (match: string , win: string): Promise<string> {
     const candidateIdsInMatch = match.split(',').map((candidate) => parseInt(candidate))
     const parsedWin = parseInt(win)
     let stats = '💌'
@@ -84,7 +84,12 @@ class BeautyPageant {
       }
       return candidate
     })
+    await this.syncMatchToRedis()
     return stats
+  }
+
+  async syncMatchToRedis (): Promise<void> {
+    await redis.set(this.redisKey, JSON.stringify({ match: this.match }))
   }
 
   async syncNewImagesToRedis (newImages: string[] = []): Promise<void> {
@@ -111,8 +116,7 @@ class BeautyPageant {
     ]
 
     debug('length after sync', this.match.candidates.length)
-    const newState = { match: this.match }
-    await redis.set(this.redisKey, JSON.stringify(newState))
+    await this.syncMatchToRedis()
   }
 }
 

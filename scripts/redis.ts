@@ -16,7 +16,7 @@ images.reverse()
 const key = '_BPM_20201218_'
 const value = {
   id: '_BPM_20201218_',
-  candidiates: images.map((image, idx) => ({
+  candidates: images.map((image, idx) => ({
     id: idx,
     image,
     compete: 0,
@@ -26,7 +26,7 @@ const value = {
 
 const run = async() => {
   // await redis.del('foo')
-  // await redis.set(key, JSON.stringify(value))
+  await redis.set(key, JSON.stringify(value))
   const redisValue = await redis.get(key)
   console.log('redisValue', redisValue)
 }

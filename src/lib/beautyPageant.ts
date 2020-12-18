@@ -40,6 +40,7 @@ class BeautyPageant {
       // process match data from redis
       try {
         this.match = JSON.parse(redisValue)
+        debug('syncFromRedis match', this.match)
         this.isReady = true
       } catch (error) {
         debug(`parse match from redis failed`, error)
@@ -121,7 +122,6 @@ class BeautyPageant {
 // NOTICE: in beauty pageant, candidates should be in ASCENDING order
 const ONGOING_MATCH_ID = '20201218'
 const beautyPageant = new BeautyPageant(ONGOING_MATCH_ID)
-
 beautyPageant.syncFromRedis()
 
 export default beautyPageant

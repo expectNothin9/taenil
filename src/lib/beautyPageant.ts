@@ -59,10 +59,10 @@ class BeautyPageant {
   }
 
   randomCandidates (): Candidate[]|null {
-    if (!this.isReady) {
-      return null
-    }
-    debug(`this.match.candidates`, this.match.candidates)
+    // if (!this.isReady) {
+    //   return null
+    // }
+    // debug(`this.match.candidates`, this.match.candidates)
     const shuffledCandidates = shuffle([ ...this.match.candidates ])
     return shuffledCandidates.slice(0, 2)
   }

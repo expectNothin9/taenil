@@ -2,6 +2,7 @@ import makeDebug from 'debug'
 
 import redis from './redis'
 import { shuffle } from '../util/array'
+import beautyImages from '../data/beauties'
 
 const debug = makeDebug('R:lib:beautyPageant')
 
@@ -28,7 +29,7 @@ class BeautyPageant {
     this.redisKey = `_BPM_${matchId}_`
     this.match = {
       id: matchId,
-      candidates: []
+      candidates: this.initializeCandidates(beautyImages)
     }
   }
 
@@ -85,7 +86,7 @@ class BeautyPageant {
       }
       return candidate
     })
-    await this.syncMatchToRedis()
+    // await this.syncMatchToRedis()
     return stats
   }
 
@@ -124,6 +125,6 @@ class BeautyPageant {
 // NOTICE: in beauty pageant, candidates should be in ASCENDING order
 const ONGOING_MATCH_ID = '20201218'
 const beautyPageant = new BeautyPageant(ONGOING_MATCH_ID)
-beautyPageant.syncFromRedis()
+// beautyPageant.syncFromRedis()
 
 export default beautyPageant
